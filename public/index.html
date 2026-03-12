@@ -1,623 +1,117 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation Tracker Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: rgba(148, 163, 184, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            color: #cbd5e1;
-            font-size: 14px;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        .donation-table {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .table-header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-        }
-
-        .table-row {
-            border-bottom: 1px solid rgba(148, 163, 184, 0.05);
-            transition: background-color 0.3s ease;
-        }
-
-        .table-row:hover {
-            background-color: rgba(148, 163, 184, 0.05);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-saweria {
-            background-color: rgba(168, 85, 247, 0.1);
-            color: #d8b4fe;
-        }
-
-        .badge-bagibagi {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: #bfdbfe;
-        }
-
-        .badge-socialbuzz {
-            background-color: rgba(34, 197, 94, 0.1);
-            color: #bbf7d0;
-        }
-
-        .platform-selector {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-
-        .platform-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 2px solid rgba(148, 163, 184, 0.2);
-            background: transparent;
-            color: #cbd5e1;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .platform-btn:hover {
-            border-color: rgba(148, 163, 184, 0.4);
-        }
-
-        .platform-btn.active {
-            background-color: #fbbf24;
-            color: #000;
-            border-color: #fbbf24;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
-            color: #94a3b8;
-        }
-
-        .empty-state svg {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 16px;
-            opacity: 0.5;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .refresh-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .refresh-btn:active {
-            transform: scale(0.95);
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-bottom: 24px;
-        }
-
-        .time-filter {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .time-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            background: transparent;
-            color: #cbd5e1;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .time-btn.active {
-            background-color: #fbbf24;
-            color: #000;
-            border-color: #fbbf24;
-        }
-
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .header-title h1 {
-            color: #fff;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .header-title p {
-            color: #94a3b8;
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-            .stat-card {
-                padding: 16px;
-            }
-
-            .stat-value {
-                font-size: 24px;
-            }
-
-            .header-section {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .platform-selector {
-                flex-direction: column;
-            }
-
-            .platform-btn {
-                width: 100%;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            .table-col-sm {
-                display: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DXCode · Donation Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="min-h-screen">
-        <!-- Header -->
-        <div class="sticky top-0 z-50 backdrop-blur-md border-b border-slate-700/50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div class="flex justify-between items-center flex-wrap gap-4">
-                    <div>
-                        <h1 class="text-2xl font-bold text-white">💰 Donation Tracker</h1>
-                        <p class="text-sm text-slate-400">Real-time donation monitoring</p>
-                    </div>
-                    <div class="flex gap-3">
-                        <button id="refreshBtn" class="refresh-btn">🔄 Refresh</button>
-                        <a href="webhook-test.html" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all">
-                            🧪 Webhook Test
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="noise"></div>
+  <div class="glow-bg"></div>
 
-        <!-- Main Content -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <!-- Total Donations -->
-                <div class="stat-card fade-in">
-                    <div style="color: #fbbf24; font-size: 24px;">💵</div>
-                    <div class="stat-value" id="totalAmount">Rp 0</div>
-                    <div class="stat-label">Total Donasi</div>
-                </div>
+  <div class="app">
 
-                <!-- Total Donors -->
-                <div class="stat-card fade-in">
-                    <div style="color: #60a5fa; font-size: 24px;">👥</div>
-                    <div class="stat-value" id="totalDonors">0</div>
-                    <div class="stat-label">Total Donors</div>
-                </div>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo-dot"></span>
+        <span class="logo-text">DXCode Studio</span>
+        <span class="logo-sub">donation tracker</span>
+      </div>
+      <div class="header-right">
+        <a href="/webhook-test.html" class="test-btn">TEST WEBHOOKS</a>
+        <span class="live-badge">
+          <span class="live-dot"></span>
+          LIVE
+        </span>
+      </div>
+    </header>
 
-                <!-- Average Donation -->
-                <div class="stat-card fade-in">
-                    <div style="color: #34d399; font-size: 24px;">📊</div>
-                    <div class="stat-value" id="avgDonation">Rp 0</div>
-                    <div class="stat-label">Rata-rata</div>
-                </div>
-
-                <!-- Latest Donation -->
-                <div class="stat-card fade-in">
-                    <div style="color: #a78bfa; font-size: 24px;">⏰</div>
-                    <div class="stat-value text-base" id="latestTime">--:--</div>
-                    <div class="stat-label" id="latestDonor">Belum ada donasi</div>
-                </div>
-            </div>
-
-            <!-- Platform Breakdown -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <!-- Chart -->
-                <div class="donation-table p-6 fade-in">
-                    <h2 class="text-lg font-bold text-white mb-4">📈 Donasi per Platform</h2>
-                    <div class="chart-container">
-                        <canvas id="platformChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Breakdown Stats -->
-                <div class="space-y-4 fade-in">
-                    <h2 class="text-lg font-bold text-white mb-4">📋 Statistik Platform</h2>
-                    
-                    <!-- Saweria -->
-                    <div class="bg-gradient-to-r from-purple-900/20 to-purple-800/10 border border-purple-500/20 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-slate-300 font-medium">🟣 Saweria</span>
-                            <span id="saweriaCount" class="text-purple-400 font-bold">0</span>
-                        </div>
-                        <div class="text-2xl font-bold text-purple-300" id="saweriaAmount">Rp 0</div>
-                        <div class="text-xs text-slate-500 mt-1">Donasi terterima</div>
-                    </div>
-
-                    <!-- BagiBagi -->
-                    <div class="bg-gradient-to-r from-blue-900/20 to-blue-800/10 border border-blue-500/20 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-slate-300 font-medium">🔵 BagiBagi</span>
-                            <span id="bagibagiCount" class="text-blue-400 font-bold">0</span>
-                        </div>
-                        <div class="text-2xl font-bold text-blue-300" id="bagibagiAmount">Rp 0</div>
-                        <div class="text-xs text-slate-500 mt-1">Donasi terterima</div>
-                    </div>
-
-                    <!-- SocialBuzz -->
-                    <div class="bg-gradient-to-r from-green-900/20 to-green-800/10 border border-green-500/20 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-slate-300 font-medium">🟢 SocialBuzz</span>
-                            <span id="socialbuzzCount" class="text-green-400 font-bold">0</span>
-                        </div>
-                        <div class="text-2xl font-bold text-green-300" id="socialbuzzAmount">Rp 0</div>
-                        <div class="text-xs text-slate-500 mt-1">Donasi terterima</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Donations Table -->
-            <div class="fade-in">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-white">📝 Riwayat Donasi</h2>
-                    <div class="platform-selector">
-                        <button class="platform-btn active" data-filter="all">Semua</button>
-                        <button class="platform-btn" data-filter="saweria">Saweria</button>
-                        <button class="platform-btn" data-filter="bagibagi">BagiBagi</button>
-                        <button class="platform-btn" data-filter="socialbuzz">SocialBuzz</button>
-                    </div>
-                </div>
-
-                <div class="donation-table overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="table-header">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-300">Waktu</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-300">Donor</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-300 table-col-sm">Platform</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-300">Jumlah</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-300 table-col-sm">Pesan</th>
-                            </tr>
-                        </thead>
-                        <tbody id="donationTableBody">
-                            <tr class="table-row">
-                                <td colspan="5" class="px-6 py-12">
-                                    <div class="empty-state">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <p>Belum ada donasi yang diterima</p>
-                                        <p class="text-sm mt-2">Donation akan muncul di sini secara real-time</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <!-- PLATFORM PILLS -->
+    <div class="platform-row">
+      <div class="platform-pill pill-socialbuzz">
+        <span class="pill-icon">⚡</span>
+        <span class="pill-name">SocialBuzz</span>
+        <span class="pill-count" id="countSocialbuzz">0</span>
+      </div>
+      <div class="platform-pill pill-saweria">
+        <span class="pill-icon">💸</span>
+        <span class="pill-name">Saweria</span>
+        <span class="pill-count" id="countSaweria">0</span>
+      </div>
+      <div class="platform-pill pill-bagibagi">
+        <span class="pill-icon">🎁</span>
+        <span class="pill-name">BagiBagi</span>
+        <span class="pill-count" id="countBagibagi">0</span>
+      </div>
     </div>
 
-    <script>
-        // Configuration
-        const CONFIG = {
-            REFRESH_INTERVAL: 3000, // 3 seconds
-            STORAGE_KEY: 'donations'
-        };
+    <!-- MAIN GRID -->
+    <div class="main-grid">
 
-        let currentFilter = 'all';
-        let donations = [];
-        let chart = null;
+      <!-- LATEST DONATION -->
+      <section class="card latest-card">
+        <div class="card-label">DONASI TERBARU</div>
+        <div class="latest-empty" id="latestEmpty">
+          <span class="empty-icon">📭</span>
+          <p>Menunggu donasi...</p>
+        </div>
+        <div class="latest-content" id="latestContent" style="display:none">
+          <div class="latest-platform-tag" id="latestPlatform"></div>
+          <div class="latest-amount" id="latestAmount">Rp 0</div>
+          <div class="latest-name" id="latestName">—</div>
+          <div class="latest-message" id="latestMessage"></div>
+          <div class="latest-time" id="latestTime"></div>
+        </div>
+      </section>
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDonations();
-            setupEventListeners();
-            initializeChart();
-            setInterval(loadDonations, CONFIG.REFRESH_INTERVAL);
-        });
+      <!-- STATS -->
+      <section class="card stats-card">
+        <div class="card-label">STATISTIK</div>
+        <div class="stat-row">
+          <span class="stat-label">Total Terkumpul</span>
+          <span class="stat-value mono" id="statTotal">Rp 0</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-row">
+          <span class="stat-label">Jumlah Transaksi</span>
+          <span class="stat-value mono" id="statCount">0×</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-row">
+          <span class="stat-label">Rata-rata</span>
+          <span class="stat-value mono" id="statAvg">Rp 0</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-row">
+          <span class="stat-label">Donasi Terbesar</span>
+          <span class="stat-value mono highlight" id="statMax">Rp 0</span>
+        </div>
+      </section>
 
-        function setupEventListeners() {
-            document.getElementById('refreshBtn').addEventListener('click', () => {
-                loadDonations();
-                updateChart();
-            });
+    </div>
 
-            document.querySelectorAll('.platform-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    currentFilter = e.target.dataset.filter;
-                    renderTable();
-                });
-            });
-        }
+    <!-- HISTORY -->
+    <section class="card history-card">
+      <div class="history-header">
+        <div class="card-label">RIWAYAT</div>
+        <button class="clear-btn" onclick="clearHistory()">Hapus Semua</button>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">Belum ada riwayat donasi</div>
+      </div>
+    </section>
 
-        function loadDonations() {
-            try {
-                const stored = localStorage.getItem(CONFIG.STORAGE_KEY);
-                donations = stored ? JSON.parse(stored) : [];
-                updateStats();
-                updateChart();
-                renderTable();
-            } catch (error) {
-                console.error('Error loading donations:', error);
-            }
-        }
+    <footer class="footer">
+      <span>© 2026 DXCStudio · Multi-Platform Donation Tracker</span>
+    </footer>
 
-        function updateStats() {
-            if (donations.length === 0) {
-                document.getElementById('totalAmount').textContent = 'Rp 0';
-                document.getElementById('totalDonors').textContent = '0';
-                document.getElementById('avgDonation').textContent = 'Rp 0';
-                document.getElementById('latestTime').textContent = '--:--';
-                document.getElementById('latestDonor').textContent = 'Belum ada donasi';
-                resetPlatformStats();
-                return;
-            }
+  </div>
 
-            // Calculate totals
-            const total = donations.reduce((sum, d) => sum + (d.amount || 0), 0);
-            const avg = Math.floor(total / donations.length);
-            const latest = donations[donations.length - 1];
-
-            // Update DOM
-            document.getElementById('totalAmount').textContent = formatCurrency(total);
-            document.getElementById('totalDonors').textContent = donations.length;
-            document.getElementById('avgDonation').textContent = formatCurrency(avg);
-            document.getElementById('latestTime').textContent = formatTime(latest.timestamp);
-            document.getElementById('latestDonor').textContent = latest.donor || 'Anonymous';
-
-            // Update platform stats
-            updatePlatformStats();
-        }
-
-        function updatePlatformStats() {
-            const platforms = {
-                saweria: { amount: 0, count: 0 },
-                bagibagi: { amount: 0, count: 0 },
-                socialbuzz: { amount: 0, count: 0 }
-            };
-
-            donations.forEach(donation => {
-                const platform = donation.platform?.toLowerCase() || '';
-                if (platforms[platform]) {
-                    platforms[platform].amount += donation.amount || 0;
-                    platforms[platform].count += 1;
-                }
-            });
-
-            document.getElementById('saweriaAmount').textContent = formatCurrency(platforms.saweria.amount);
-            document.getElementById('saweriaCount').textContent = platforms.saweria.count;
-
-            document.getElementById('bagibagiAmount').textContent = formatCurrency(platforms.bagibagi.amount);
-            document.getElementById('bagibagiCount').textContent = platforms.bagibagi.count;
-
-            document.getElementById('socialbuzzAmount').textContent = formatCurrency(platforms.socialbuzz.amount);
-            document.getElementById('socialbuzzCount').textContent = platforms.socialbuzz.count;
-        }
-
-        function resetPlatformStats() {
-            ['saweria', 'bagibagi', 'socialbuzz'].forEach(platform => {
-                document.getElementById(`${platform}Amount`).textContent = 'Rp 0';
-                document.getElementById(`${platform}Count`).textContent = '0';
-            });
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById('donationTableBody');
-            let filtered = donations;
-
-            if (currentFilter !== 'all') {
-                filtered = donations.filter(d => d.platform?.toLowerCase() === currentFilter);
-            }
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr class="table-row">
-                        <td colspan="5" class="px-6 py-12">
-                            <div class="empty-state">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <p>Tidak ada donasi dari platform ini</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            tbody.innerHTML = filtered.reverse().map((donation, index) => `
-                <tr class="table-row">
-                    <td class="px-6 py-4 text-sm text-slate-300">${formatTime(donation.timestamp)}</td>
-                    <td class="px-6 py-4 text-sm text-slate-200 font-medium">${donation.donor || 'Anonymous'}</td>
-                    <td class="px-6 py-4 text-sm table-col-sm">
-                        <span class="badge ${getBadgeClass(donation.platform)}">
-                            ${donation.platform || 'Unknown'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-sm font-semibold text-amber-400">${formatCurrency(donation.amount || 0)}</td>
-                    <td class="px-6 py-4 text-sm text-slate-400 table-col-sm truncate" title="${donation.message || '-'}">
-                        ${donation.message ? donation.message.substring(0, 30) + '...' : '-'}
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function initializeChart() {
-            const ctx = document.getElementById('platformChart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Saweria', 'BagiBagi', 'SocialBuzz'],
-                    datasets: [{
-                        data: [0, 0, 0],
-                        backgroundColor: ['#a855f7', '#3b82f6', '#22c55e'],
-                        borderColor: ['#6d28d9', '#1e40af', '#16a34a'],
-                        borderWidth: 2,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#cbd5e1',
-                                font: { size: 12, weight: '600' }
-                            }
-                        }
-                    }
-                }
-            });
-            updateChart();
-        }
-
-        function updateChart() {
-            if (!chart) return;
-
-            const platformData = {
-                saweria: 0,
-                bagibagi: 0,
-                socialbuzz: 0
-            };
-
-            donations.forEach(donation => {
-                const platform = donation.platform?.toLowerCase() || '';
-                if (platformData.hasOwnProperty(platform)) {
-                    platformData[platform] += donation.amount || 0;
-                }
-            });
-
-            chart.data.datasets[0].data = [
-                platformData.saweria,
-                platformData.bagibagi,
-                platformData.socialbuzz
-            ];
-            chart.update();
-        }
-
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-
-        function formatTime(timestamp) {
-            if (!timestamp) return '--:--';
-            try {
-                const date = new Date(timestamp);
-                return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            } catch {
-                return '--:--';
-            }
-        }
-
-        function getBadgeClass(platform) {
-            const platformLower = platform?.toLowerCase() || '';
-            if (platformLower === 'saweria') return 'badge-saweria';
-            if (platformLower === 'bagibagi') return 'badge-bagibagi';
-            return 'badge-socialbuzz';
-        }
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
