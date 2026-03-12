@@ -118,6 +118,35 @@ body {
   margin-top: 2px;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.test-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-2);
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.test-btn:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.18);
+}
+
+
 .live-badge {
   display: flex;
   align-items: center;

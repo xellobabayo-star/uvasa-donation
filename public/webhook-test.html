@@ -13,9 +13,11 @@
       --surface:    #111118;
       --surface2:   #16161f;
       --border:     rgba(255,255,255,0.07);
+      --border-hi:  rgba(255,255,255,0.13);
       --socialbuzz: #8b5cf6;
       --saweria:    #ef4444;
       --bagibagi:   #10b981;
+      --gold:       #f59e0b;
       --text:       #f1f0f5;
       --text-2:     #a09db8;
       --text-3:     #5a5775;
@@ -35,7 +37,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* noise overlay */
+    /* noise */
     body::before {
       content: '';
       pointer-events: none;
@@ -52,22 +54,26 @@
       top: -30%; left: 50%;
       transform: translateX(-50%);
       width: 900px; height: 600px;
-      background: radial-gradient(ellipse at center, rgba(139,92,246,0.1) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, transparent 70%);
       z-index: 0;
     }
 
     .wrap {
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto;
       position: relative; z-index: 1;
     }
 
-    /* ---- HEADER ---- */
+    /* =========================================
+       HEADER
+    ========================================= */
     .page-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .header-left { display: flex; align-items: center; gap: 12px; }
@@ -82,50 +88,65 @@
     .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.06em; }
 
     .logo-sub {
-      font-size: 0.72rem;
-      color: var(--text-3);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 2px;
+      font-size: 0.72rem; color: var(--text-3);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px;
     }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
 
     .back-link {
       display: flex; align-items: center; gap: 7px;
-      font-size: 0.8rem; font-weight: 700;
-      color: var(--text-3);
-      text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: var(--radius-pill);
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
+      color: var(--text-3); text-decoration: none;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: var(--radius-pill);
       transition: color 0.2s, border-color 0.2s;
     }
-    .back-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .back-link:hover { color: var(--text); border-color: var(--border-hi); }
 
-    /* ---- PAGE TITLE ---- */
-    .page-title { margin-bottom: 32px; }
+    /* =========================================
+       PAGE TITLE
+    ========================================= */
+    .page-title { margin-bottom: 28px; }
     .page-title h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 6px; }
     .page-title p  { color: var(--text-3); font-size: 0.88rem; }
 
-    /* ---- GRID ---- */
-    .grid {
+    /* =========================================
+       OUTER LAYOUT: forms left, preview right
+    ========================================= */
+    .outer {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr 320px;
       gap: 20px;
-      margin-bottom: 28px;
+      align-items: start;
     }
 
-    @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) { .outer { grid-template-columns: 1fr; } }
 
-    /* ---- CARD ---- */
+    /* =========================================
+       FORM CARDS GRID
+    ========================================= */
+    .forms-col { display: flex; flex-direction: column; gap: 20px; }
+
+    .forms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 680px) { .forms-grid { grid-template-columns: 1fr; } }
+
+    /* =========================================
+       CARD BASE
+    ========================================= */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 24px 22px 22px;
+      padding: 22px 20px 20px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
       position: relative;
       overflow: hidden;
     }
@@ -133,7 +154,7 @@
     .card::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
     }
 
     .card-socialbuzz { border-top: 2px solid var(--socialbuzz); }
@@ -141,15 +162,14 @@
     .card-bagibagi   { border-top: 2px solid var(--bagibagi); }
 
     /* ---- card head ---- */
-    .card-head { display: flex; align-items: center; gap: 10px; }
-    .card-icon { font-size: 1.3rem; line-height: 1; }
-    .card-title { font-size: 1rem; font-weight: 800; color: var(--text); flex: 1; }
+    .card-head { display: flex; align-items: center; gap: 9px; }
+    .card-icon { font-size: 1.25rem; line-height: 1; }
+    .card-title { font-size: 0.95rem; font-weight: 800; flex: 1; }
 
     .badge {
-      font-size: 0.63rem; font-weight: 700;
+      font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 3px 9px;
-      border-radius: var(--radius-pill);
+      padding: 3px 8px; border-radius: var(--radius-pill);
     }
     .badge-socialbuzz { background: rgba(139,92,246,0.15); color: #b78af7; border: 1px solid rgba(139,92,246,0.25); }
     .badge-saweria    { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
@@ -160,73 +180,45 @@
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 9px 13px;
+      padding: 8px 12px;
     }
-    .ep-label {
-      font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--text-3); margin-bottom: 4px;
-    }
-    .ep-url {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.76rem; color: var(--text-2);
-      word-break: break-all;
-    }
+    .ep-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+    .ep-url { font-family: 'DM Mono', monospace; font-size: 0.73rem; color: var(--text-2); word-break: break-all; }
 
     /* ---- form ---- */
-    .form-body { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .form-body { display: flex; flex-direction: column; gap: 11px; flex: 1; }
 
-    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
 
     .field label {
-      font-size: 0.68rem; font-weight: 700;
+      font-size: 0.64rem; font-weight: 700;
       letter-spacing: 0.07em; text-transform: uppercase;
       color: var(--text-3);
     }
 
-    .field input,
-    .field textarea {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.86rem;
-      width: 100%;
-      outline: none;
-      resize: vertical;
+    .field input, .field textarea {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 9px 11px;
+      color: var(--text); font-family: 'DM Mono', monospace;
+      font-size: 0.84rem; width: 100%; outline: none; resize: vertical;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .field textarea { min-height: 72px; }
+    .field textarea { min-height: 65px; }
 
-    /* focus rings per platform */
-    .card-socialbuzz .field input:focus,
-    .card-socialbuzz .field textarea:focus {
-      border-color: rgba(139,92,246,0.5);
-      box-shadow: 0 0 0 3px rgba(139,92,246,0.08);
-    }
-    .card-saweria .field input:focus,
-    .card-saweria .field textarea:focus {
-      border-color: rgba(239,68,68,0.5);
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
-    }
-    .card-bagibagi .field input:focus,
-    .card-bagibagi .field textarea:focus {
-      border-color: rgba(16,185,129,0.5);
-      box-shadow: 0 0 0 3px rgba(16,185,129,0.08);
-    }
+    .card-socialbuzz .field input:focus, .card-socialbuzz .field textarea:focus {
+      border-color: rgba(139,92,246,0.5); box-shadow: 0 0 0 3px rgba(139,92,246,0.08); }
+    .card-saweria .field input:focus, .card-saweria .field textarea:focus {
+      border-color: rgba(239,68,68,0.5); box-shadow: 0 0 0 3px rgba(239,68,68,0.08); }
+    .card-bagibagi .field input:focus, .card-bagibagi .field textarea:focus {
+      border-color: rgba(16,185,129,0.5); box-shadow: 0 0 0 3px rgba(16,185,129,0.08); }
 
-    /* ---- button ---- */
+    /* ---- submit button ---- */
     .btn {
-      width: 100%; padding: 12px;
+      width: 100%; padding: 11px;
       border: none; border-radius: var(--radius-sm);
       font-family: 'Syne', sans-serif;
-      font-size: 0.88rem; font-weight: 700;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-      margin-top: 2px;
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em;
+      cursor: pointer; transition: opacity 0.2s, transform 0.15s;
     }
     .btn:hover    { opacity: 0.86; transform: translateY(-1px); }
     .btn:active   { transform: translateY(0); }
@@ -237,24 +229,194 @@
     .btn-bagibagi   { background: var(--bagibagi);   color: #fff; }
 
     /* ---- status ---- */
-    .status { display: none; font-size: 0.8rem; padding: 9px 12px; border-radius: var(--radius-sm); line-height: 1.5; }
-    .status.success { display: block; background: rgba(16,185,129,0.1);  border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
-    .status.error   { display: block; background: rgba(239,68,68,0.1);   border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
+    .status { display: none; font-size: 0.78rem; padding: 8px 11px; border-radius: var(--radius-sm); line-height: 1.5; }
+    .status.success { display: block; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+    .status.error   { display: block; background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
 
-    /* ---- bottom links ---- */
-    .bottom-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    /* =========================================
+       FIRE ALL BUTTON (bawah forms-grid)
+    ========================================= */
+    .fire-all-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-fire-all {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem; font-weight: 800; letter-spacing: 0.05em;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--socialbuzz), #6d28d9);
+      color: #fff;
+      transition: opacity 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-fire-all::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+    .btn-fire-all:hover  { opacity: 0.88; transform: translateY(-1px); }
+    .btn-fire-all:active { transform: translateY(0); }
+    .btn-fire-all:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+
+    .fire-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem; color: var(--text-3);
+      white-space: nowrap;
+    }
+
+    /* =========================================
+       LIVE PREVIEW PANEL (right column)
+    ========================================= */
+    .preview-col {
+      position: sticky;
+      top: 24px;
+    }
+
+    .preview-card {
+      background: var(--surface);
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .preview-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: pulse-green 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+      50%       { opacity: 0.7; box-shadow: 0 0 0 5px rgba(52,211,153,0); }
+    }
+
+    .preview-refresh-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem; font-weight: 500;
+      color: var(--text-3); background: transparent;
+      border: 1px solid var(--border); padding: 4px 10px;
+      border-radius: var(--radius-pill); cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .preview-refresh-btn:hover { color: var(--text); border-color: var(--border-hi); }
+    .preview-refresh-btn.spinning { animation: spin 0.5s linear; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .preview-body { padding: 18px; }
+
+    /* waiting state */
+    .preview-waiting {
+      text-align: center;
+      padding: 32px 0;
+      color: var(--text-3);
+      font-size: 0.84rem;
+    }
+    .preview-waiting-icon { font-size: 2rem; margin-bottom: 10px; display: block; opacity: 0.35; }
+
+    /* donation result */
+    .preview-result { display: none; animation: fadeUp 0.35s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .preview-platform-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: var(--radius-pill);
+      margin-bottom: 14px;
+    }
+    .preview-platform-tag.socialbuzz { background: rgba(139,92,246,0.15); color: #b78af7; border: 1px solid rgba(139,92,246,0.3); }
+    .preview-platform-tag.saweria    { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .preview-platform-tag.bagibagi   { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+
+    .preview-amount {
+      font-size: 2.2rem; font-weight: 800;
+      color: var(--text); letter-spacing: -0.02em;
+      line-height: 1; margin-bottom: 8px;
+    }
+
+    .preview-name { font-size: 0.95rem; font-weight: 700; color: var(--text-2); margin-bottom: 6px; }
+
+    .preview-message {
+      font-size: 0.82rem; color: var(--text-3);
+      font-style: italic; margin-bottom: 14px; line-height: 1.5;
+    }
+
+    .preview-divider { height: 1px; background: var(--border); margin: 14px 0; }
+
+    .preview-raw-label {
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 8px;
+    }
+
+    .preview-raw {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem; color: var(--text-2);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+
+    .preview-time {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; color: var(--text-3);
+      margin-top: 12px;
+    }
+
+    /* flash highlight when new data arrives */
+    @keyframes flash-preview {
+      0%, 100% { border-color: rgba(139,92,246,0.3); }
+      40%       { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139,92,246,0.2); }
+    }
+    .preview-card.flash { animation: flash-preview 0.7s ease 2; }
+
+    /* =========================================
+       BOTTOM LINKS
+    ========================================= */
+    .bottom-links {
+      display: flex; justify-content: center;
+      gap: 12px; flex-wrap: wrap;
+      margin-top: 28px;
+    }
 
     .bottom-link {
       display: flex; align-items: center; gap: 7px;
       font-size: 0.82rem; font-weight: 700;
       color: var(--text-2); text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 10px 20px;
-      border-radius: var(--radius-pill);
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 10px 20px; border-radius: var(--radius-pill);
       transition: color 0.2s, border-color 0.2s;
     }
-    .bottom-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .bottom-link:hover { color: var(--text); border-color: var(--border-hi); }
   </style>
 </head>
 <body>
@@ -267,112 +429,154 @@
       <span class="logo-text">UVASA</span>
       <span class="logo-sub">webhook tester</span>
     </div>
-    <a href="/" class="back-link">← Dashboard</a>
+    <div class="header-right">
+      <a href="/" class="back-link">← Dashboard</a>
+    </div>
   </div>
 
   <!-- TITLE -->
   <div class="page-title">
     <h1>🧪 Webhook Tester</h1>
-    <p>Simulasi donasi masuk dari SocialBuzz, Saweria, dan BagiBagi</p>
+    <p>Simulasi donasi masuk — hasil langsung tampil di preview kanan</p>
   </div>
 
-  <!-- 3 CARDS -->
-  <div class="grid">
+  <!-- OUTER LAYOUT -->
+  <div class="outer">
 
-    <!-- SOCIALBUZZ -->
-    <div class="card card-socialbuzz">
-      <div class="card-head">
-        <span class="card-icon">⚡</span>
-        <span class="card-title">SocialBuzz</span>
-        <span class="badge badge-socialbuzz">POST</span>
+    <!-- LEFT: FORMS -->
+    <div class="forms-col">
+
+      <div class="forms-grid">
+
+        <!-- SOCIALBUZZ -->
+        <div class="card card-socialbuzz">
+          <div class="card-head">
+            <span class="card-icon">⚡</span>
+            <span class="card-title">SocialBuzz</span>
+            <span class="badge badge-socialbuzz">POST</span>
+          </div>
+          <div class="endpoint-box">
+            <div class="ep-label">Endpoint</div>
+            <div class="ep-url" id="urlSocialbuzz">/webhook/socialbuzz</div>
+          </div>
+          <form class="form-body" id="formSocialbuzz" onsubmit="testSocialbuzz(event)">
+            <div class="field">
+              <label>Nama Supporter</label>
+              <input type="text" name="supporter" value="TestUser123" required />
+            </div>
+            <div class="field">
+              <label>Jumlah (Rp)</label>
+              <input type="number" name="amount" value="50000" min="1" required />
+            </div>
+            <div class="field">
+              <label>Pesan</label>
+              <textarea name="message">Halo dari SocialBuzz! ⚡</textarea>
+            </div>
+            <button type="submit" class="btn btn-socialbuzz">🚀 Test SocialBuzz</button>
+            <div class="status" id="statusSocialbuzz"></div>
+          </form>
+        </div>
+
+        <!-- SAWERIA -->
+        <div class="card card-saweria">
+          <div class="card-head">
+            <span class="card-icon">💸</span>
+            <span class="card-title">Saweria</span>
+            <span class="badge badge-saweria">POST</span>
+          </div>
+          <div class="endpoint-box">
+            <div class="ep-label">Endpoint</div>
+            <div class="ep-url" id="urlSaweria">/webhook/saweria</div>
+          </div>
+          <form class="form-body" id="formSaweria" onsubmit="testSaweria(event)">
+            <div class="field">
+              <label>Nama Donatur</label>
+              <input type="text" name="donator_name" value="TestDonor Saweria" required />
+            </div>
+            <div class="field">
+              <label>Jumlah (Rp)</label>
+              <input type="number" name="amount_raw" value="75000" min="1" required />
+            </div>
+            <div class="field">
+              <label>Pesan</label>
+              <textarea name="message">Halo dari Saweria! 💸</textarea>
+            </div>
+            <button type="submit" class="btn btn-saweria">🚀 Test Saweria</button>
+            <div class="status" id="statusSaweria"></div>
+          </form>
+        </div>
+
+        <!-- BAGIBAGI -->
+        <div class="card card-bagibagi">
+          <div class="card-head">
+            <span class="card-icon">🎁</span>
+            <span class="card-title">BagiBagi</span>
+            <span class="badge badge-bagibagi">POST</span>
+          </div>
+          <div class="endpoint-box">
+            <div class="ep-label">Endpoint</div>
+            <div class="ep-url" id="urlBagibagi">/webhook/bagibagi</div>
+          </div>
+          <form class="form-body" id="formBagibagi" onsubmit="testBagibagi(event)">
+            <div class="field">
+              <label>Nama Donatur</label>
+              <input type="text" name="name" value="TestDonor BagiBagi" required />
+            </div>
+            <div class="field">
+              <label>Jumlah (Rp)</label>
+              <input type="number" name="amount" value="100000" min="1" required />
+            </div>
+            <div class="field">
+              <label>Pesan</label>
+              <textarea name="message">Halo dari BagiBagi! 🎁</textarea>
+            </div>
+            <button type="submit" class="btn btn-bagibagi">🚀 Test BagiBagi</button>
+            <div class="status" id="statusBagibagi"></div>
+          </form>
+        </div>
+
+      </div><!-- /forms-grid -->
+
+      <!-- FIRE ALL -->
+      <div class="fire-all-wrap">
+        <button class="btn-fire-all" id="btnFireAll" onclick="fireAll()">
+          🔥 Kirim Semua Platform Sekarang
+        </button>
+        <span class="fire-status" id="fireStatus"></span>
       </div>
 
-      <div class="endpoint-box">
-        <div class="ep-label">Endpoint</div>
-        <div class="ep-url" id="urlSocialbuzz">/webhook/socialbuzz</div>
+    </div><!-- /forms-col -->
+
+    <!-- RIGHT: LIVE PREVIEW -->
+    <div class="preview-col">
+      <div class="preview-card" id="previewCard">
+        <div class="preview-header">
+          <div class="preview-title">
+            <span class="preview-dot"></span>
+            Live Preview
+          </div>
+          <button class="preview-refresh-btn" id="refreshBtn" onclick="manualRefresh()">↻ Refresh</button>
+        </div>
+        <div class="preview-body">
+          <div class="preview-waiting" id="previewWaiting">
+            <span class="preview-waiting-icon">📡</span>
+            Menunggu donasi masuk...
+          </div>
+          <div class="preview-result" id="previewResult">
+            <div class="preview-platform-tag" id="prevPlatform"></div>
+            <div class="preview-amount" id="prevAmount">Rp 0</div>
+            <div class="preview-name" id="prevName">—</div>
+            <div class="preview-message" id="prevMessage"></div>
+            <div class="preview-divider"></div>
+            <div class="preview-raw-label">Raw JSON (/data)</div>
+            <pre class="preview-raw" id="prevRaw">{}</pre>
+            <div class="preview-time" id="prevTime"></div>
+          </div>
+        </div>
       </div>
+    </div><!-- /preview-col -->
 
-      <form class="form-body" onsubmit="testSocialbuzz(event)">
-        <div class="field">
-          <label>Nama Supporter</label>
-          <input type="text" name="supporter" value="TestUser123" required />
-        </div>
-        <div class="field">
-          <label>Jumlah (Rp)</label>
-          <input type="number" name="amount" value="50000" min="1" required />
-        </div>
-        <div class="field">
-          <label>Pesan</label>
-          <textarea name="message">Halo dari SocialBuzz! ⚡</textarea>
-        </div>
-        <button type="submit" class="btn btn-socialbuzz">🚀 Test SocialBuzz</button>
-        <div class="status" id="statusSocialbuzz"></div>
-      </form>
-    </div>
-
-    <!-- SAWERIA -->
-    <div class="card card-saweria">
-      <div class="card-head">
-        <span class="card-icon">💸</span>
-        <span class="card-title">Saweria</span>
-        <span class="badge badge-saweria">POST</span>
-      </div>
-
-      <div class="endpoint-box">
-        <div class="ep-label">Endpoint</div>
-        <div class="ep-url" id="urlSaweria">/webhook/saweria</div>
-      </div>
-
-      <form class="form-body" onsubmit="testSaweria(event)">
-        <div class="field">
-          <label>Nama Donatur</label>
-          <input type="text" name="donator_name" value="TestDonor Saweria" required />
-        </div>
-        <div class="field">
-          <label>Jumlah (Rp)</label>
-          <input type="number" name="amount_raw" value="75000" min="1" required />
-        </div>
-        <div class="field">
-          <label>Pesan</label>
-          <textarea name="message">Halo dari Saweria! 💸</textarea>
-        </div>
-        <button type="submit" class="btn btn-saweria">🚀 Test Saweria</button>
-        <div class="status" id="statusSaweria"></div>
-      </form>
-    </div>
-
-    <!-- BAGIBAGI -->
-    <div class="card card-bagibagi">
-      <div class="card-head">
-        <span class="card-icon">🎁</span>
-        <span class="card-title">BagiBagi</span>
-        <span class="badge badge-bagibagi">POST</span>
-      </div>
-
-      <div class="endpoint-box">
-        <div class="ep-label">Endpoint</div>
-        <div class="ep-url" id="urlBagibagi">/webhook/bagibagi</div>
-      </div>
-
-      <form class="form-body" onsubmit="testBagibagi(event)">
-        <div class="field">
-          <label>Nama Donatur</label>
-          <input type="text" name="name" value="TestDonor BagiBagi" required />
-        </div>
-        <div class="field">
-          <label>Jumlah (Rp)</label>
-          <input type="number" name="amount" value="100000" min="1" required />
-        </div>
-        <div class="field">
-          <label>Pesan</label>
-          <textarea name="message">Halo dari BagiBagi! 🎁</textarea>
-        </div>
-        <button type="submit" class="btn btn-bagibagi">🚀 Test BagiBagi</button>
-        <div class="status" id="statusBagibagi"></div>
-      </form>
-    </div>
-
-  </div><!-- /grid -->
+  </div><!-- /outer -->
 
   <!-- BOTTOM LINKS -->
   <div class="bottom-links">
@@ -383,20 +587,91 @@
 </div><!-- /wrap -->
 
 <script>
-  // update full URLs
+  // =========================================
+  //  UPDATE ENDPOINT URLS
+  // =========================================
   window.addEventListener('load', () => {
     const base = window.location.origin;
     document.getElementById('urlSocialbuzz').textContent = base + '/webhook/socialbuzz';
     document.getElementById('urlSaweria').textContent    = base + '/webhook/saweria';
     document.getElementById('urlBagibagi').textContent   = base + '/webhook/bagibagi';
+
+    // start polling live preview
+    pollPreview();
+    setInterval(pollPreview, 2500);
   });
 
-  // generic fetch helper
+  // =========================================
+  //  LIVE PREVIEW POLLING
+  // =========================================
+  let lastPreviewKey = null;
+
+  async function pollPreview() {
+    try {
+      const res  = await fetch('/data');
+      const data = await res.json();
+      if (!data || !data.platform) return;
+
+      const key = `${data.platform}|${data.username}|${data.amount}`;
+      if (key === lastPreviewKey) return;
+      lastPreviewKey = key;
+
+      renderPreview(data, true);
+    } catch (e) {}
+  }
+
+  function renderPreview(data, flash = false) {
+    const p    = (data.platform || 'unknown').toLowerCase();
+    const lbl  = { socialbuzz: '⚡ SocialBuzz', saweria: '💸 Saweria', bagibagi: '🎁 BagiBagi' }[p] || p;
+
+    document.getElementById('previewWaiting').style.display = 'none';
+    const result = document.getElementById('previewResult');
+    result.style.display = 'block';
+
+    const tag = document.getElementById('prevPlatform');
+    tag.textContent = lbl;
+    tag.className   = `preview-platform-tag ${p}`;
+
+    document.getElementById('prevAmount').textContent  = 'Rp ' + fmtNum(data.amount);
+    document.getElementById('prevName').textContent    = data.username || 'Anonymous';
+    document.getElementById('prevTime').textContent    = '← diterima ' + new Date().toLocaleTimeString('id-ID');
+
+    const msgEl = document.getElementById('prevMessage');
+    if (data.message && data.message.trim()) {
+      msgEl.textContent = `"${data.message}"`;
+      msgEl.style.display = 'block';
+    } else {
+      msgEl.style.display = 'none';
+    }
+
+    // pretty raw JSON
+    document.getElementById('prevRaw').textContent = JSON.stringify(data, null, 2);
+
+    // flash animation
+    if (flash) {
+      const card = document.getElementById('previewCard');
+      card.classList.remove('flash');
+      void card.offsetWidth;
+      card.classList.add('flash');
+    }
+  }
+
+  async function manualRefresh() {
+    const btn = document.getElementById('refreshBtn');
+    btn.classList.add('spinning');
+    lastPreviewKey = null; // force re-render
+    await pollPreview();
+    setTimeout(() => btn.classList.remove('spinning'), 500);
+  }
+
+  // =========================================
+  //  GENERIC SEND
+  // =========================================
   async function send(endpoint, payload, statusId, btn) {
     const el = document.getElementById(statusId);
     el.className = 'status';
-    btn.disabled = true;
     const orig = btn.textContent;
+    btn.disabled = true;
     btn.textContent = '⏳ Mengirim...';
 
     try {
@@ -408,7 +683,9 @@
 
       if (res.ok) {
         el.className = 'status success';
-        el.textContent = '✅ Berhasil! Cek dashboard untuk melihat donasi masuk.';
+        el.textContent = '✅ Berhasil!';
+        // force preview refresh immediately
+        setTimeout(() => { lastPreviewKey = null; pollPreview(); }, 300);
       } else {
         const txt = await res.text();
         el.className = 'status error';
@@ -416,14 +693,16 @@
       }
     } catch (err) {
       el.className = 'status error';
-      el.textContent = '❌ Gagal terhubung: ' + err.message;
+      el.textContent = '❌ ' + err.message;
     } finally {
       btn.disabled = false;
       btn.textContent = orig;
     }
   }
 
-  // SocialBuzz — field: supporter, amount, message
+  // =========================================
+  //  INDIVIDUAL TESTS
+  // =========================================
   function testSocialbuzz(e) {
     e.preventDefault();
     const f = e.target;
@@ -434,7 +713,6 @@
     }, 'statusSocialbuzz', f.querySelector('button'));
   }
 
-  // Saweria — field: donator_name, amount_raw, message
   function testSaweria(e) {
     e.preventDefault();
     const f = e.target;
@@ -445,7 +723,6 @@
     }, 'statusSaweria', f.querySelector('button'));
   }
 
-  // BagiBagi — field: name, amount, message
   function testBagibagi(e) {
     e.preventDefault();
     const f = e.target;
@@ -454,6 +731,104 @@
       amount:  parseInt(f.amount.value),
       message: f.message.value,
     }, 'statusBagibagi', f.querySelector('button'));
+  }
+
+  // =========================================
+  //  FIRE ALL — kirim semua 3 platform berurutan
+  // =========================================
+  async function fireAll() {
+    const btn    = document.getElementById('btnFireAll');
+    const status = document.getElementById('fireStatus');
+    btn.disabled = true;
+    btn.textContent = '⏳ Mengirim semua...';
+    status.textContent = '';
+
+    const tasks = [
+      {
+        endpoint: '/webhook/socialbuzz',
+        payload:  buildPayload('formSocialbuzz', 'socialbuzz'),
+        statusId: 'statusSocialbuzz',
+      },
+      {
+        endpoint: '/webhook/saweria',
+        payload:  buildPayload('formSaweria', 'saweria'),
+        statusId: 'statusSaweria',
+      },
+      {
+        endpoint: '/webhook/bagibagi',
+        payload:  buildPayload('formBagibagi', 'bagibagi'),
+        statusId: 'statusBagibagi',
+      },
+    ];
+
+    let success = 0;
+    for (const t of tasks) {
+      const el   = document.getElementById(t.statusId);
+      const form = document.getElementById(t.statusId.replace('status', 'form'));
+      const btn2 = form ? form.querySelector('button') : null;
+      el.className = 'status';
+
+      try {
+        const res = await fetch(t.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(t.payload),
+        });
+        if (res.ok) {
+          el.className = 'status success';
+          el.textContent = '✅ Berhasil!';
+          success++;
+        } else {
+          el.className = 'status error';
+          el.textContent = `❌ Error ${res.status}`;
+        }
+      } catch (err) {
+        el.className = 'status error';
+        el.textContent = '❌ ' + err.message;
+      }
+
+      await delay(400); // jeda kecil antar request
+    }
+
+    // refresh preview
+    setTimeout(() => { lastPreviewKey = null; pollPreview(); }, 300);
+
+    btn.disabled = false;
+    btn.textContent = '🔥 Kirim Semua Platform Sekarang';
+    status.textContent = `${success}/3 berhasil`;
+    setTimeout(() => { status.textContent = ''; }, 4000);
+  }
+
+  function buildPayload(formId, platform) {
+    const f = document.getElementById(formId);
+    if (!f) return {};
+    if (platform === 'socialbuzz') return {
+      supporter: f.querySelector('[name="supporter"]').value,
+      amount:    parseInt(f.querySelector('[name="amount"]').value),
+      message:   f.querySelector('[name="message"]').value,
+    };
+    if (platform === 'saweria') return {
+      donator_name: f.querySelector('[name="donator_name"]').value,
+      amount_raw:   parseInt(f.querySelector('[name="amount_raw"]').value),
+      message:      f.querySelector('[name="message"]').value,
+    };
+    if (platform === 'bagibagi') return {
+      name:    f.querySelector('[name="name"]').value,
+      amount:  parseInt(f.querySelector('[name="amount"]').value),
+      message: f.querySelector('[name="message"]').value,
+    };
+    return {};
+  }
+
+  // =========================================
+  //  UTILS
+  // =========================================
+  function fmtNum(n) {
+    return new Intl.NumberFormat('id-ID').format(Number(n) || 0);
+  }
+
+  function delay(ms) {
+    return new Promise(r => setTimeout(r, ms));
   }
 </script>
 </body>
