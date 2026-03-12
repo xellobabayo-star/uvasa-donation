@@ -1,59 +1,116 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation Tracker - Multi Platform</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UVASA · Donation Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1>💝 Donation Tracker</h1>
-            <p>Multi-Platform Donation History</p>
-        </header>
+  <div class="noise"></div>
+  <div class="glow-bg"></div>
 
-        <!-- Platform Stats -->
-        <section class="stats">
-            <div class="stat-card">
-                <h3>SocialBuzz</h3>
-                <p class="platform-badge">💬</p>
-            </div>
-            <div class="stat-card">
-                <h3>Saweria</h3>
-                <p class="platform-badge">🎁</p>
-            </div>
-            <div class="stat-card">
-                <h3>BagiBagi</h3>
-                <p class="platform-badge">📦</p>
-            </div>
-        </section>
+  <div class="app">
 
-        <!-- Latest Donation -->
-        <section class="latest-donation">
-            <h2>📌 Latest Donation</h2>
-            <div class="donation-box" id="latestDonation">
-                <p class="loading">Loading donation data...</p>
-            </div>
-        </section>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo-dot"></span>
+        <span class="logo-text">UVASA</span>
+        <span class="logo-sub">donation tracker</span>
+      </div>
+      <div class="header-right">
+        <span class="live-badge">
+          <span class="live-dot"></span>
+          LIVE
+        </span>
+      </div>
+    </header>
 
-        <!-- Donation History -->
-        <section class="history">
-            <h2>📜 Donation History</h2>
-            <div class="history-container">
-                <div id="historyList" class="history-list">
-                    <p class="loading">Loading history...</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2026 Multi-Platform Donation Tracker</p>
-        </footer>
+    <!-- PLATFORM PILLS -->
+    <div class="platform-row">
+      <div class="platform-pill pill-socialbuzz">
+        <span class="pill-icon">⚡</span>
+        <span class="pill-name">SocialBuzz</span>
+        <span class="pill-count" id="countSocialbuzz">0</span>
+      </div>
+      <div class="platform-pill pill-saweria">
+        <span class="pill-icon">💸</span>
+        <span class="pill-name">Saweria</span>
+        <span class="pill-count" id="countSaweria">0</span>
+      </div>
+      <div class="platform-pill pill-bagibagi">
+        <span class="pill-icon">🎁</span>
+        <span class="pill-name">BagiBagi</span>
+        <span class="pill-count" id="countBagibagi">0</span>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+      <!-- LATEST DONATION -->
+      <section class="card latest-card">
+        <div class="card-label">DONASI TERBARU</div>
+        <div class="latest-empty" id="latestEmpty">
+          <span class="empty-icon">📭</span>
+          <p>Menunggu donasi...</p>
+        </div>
+        <div class="latest-content" id="latestContent" style="display:none">
+          <div class="latest-platform-tag" id="latestPlatform"></div>
+          <div class="latest-amount" id="latestAmount">Rp 0</div>
+          <div class="latest-name" id="latestName">—</div>
+          <div class="latest-message" id="latestMessage"></div>
+          <div class="latest-time" id="latestTime"></div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="card stats-card">
+        <div class="card-label">STATISTIK</div>
+        <div class="stat-row">
+          <span class="stat-label">Total Terkumpul</span>
+          <span class="stat-value mono" id="statTotal">Rp 0</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-row">
+          <span class="stat-label">Jumlah Transaksi</span>
+          <span class="stat-value mono" id="statCount">0×</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-row">
+          <span class="stat-label">Rata-rata</span>
+          <span class="stat-value mono" id="statAvg">Rp 0</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-row">
+          <span class="stat-label">Donasi Terbesar</span>
+          <span class="stat-value mono highlight" id="statMax">Rp 0</span>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- HISTORY -->
+    <section class="card history-card">
+      <div class="history-header">
+        <div class="card-label">RIWAYAT</div>
+        <button class="clear-btn" onclick="clearHistory()">Hapus Semua</button>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">Belum ada riwayat donasi</div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>© 2026 UVASA · Multi-Platform Donation Tracker</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
