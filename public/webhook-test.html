@@ -1,317 +1,460 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webhook Tester</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UVASA · Webhook Tester</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:         #0a0a0f;
+      --surface:    #111118;
+      --surface2:   #16161f;
+      --border:     rgba(255,255,255,0.07);
+      --socialbuzz: #8b5cf6;
+      --saweria:    #ef4444;
+      --bagibagi:   #10b981;
+      --text:       #f1f0f5;
+      --text-2:     #a09db8;
+      --text-3:     #5a5775;
+      --radius:     16px;
+      --radius-sm:  10px;
+      --radius-pill:999px;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 20px 60px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
+    /* noise overlay */
+    body::before {
+      content: '';
+      pointer-events: none;
+      position: fixed; inset: 0; z-index: 999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
 
-        header h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
+    /* glow */
+    body::after {
+      content: '';
+      pointer-events: none;
+      position: fixed;
+      top: -30%; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(139,92,246,0.1) 0%, transparent 70%);
+      z-index: 0;
+    }
 
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      position: relative; z-index: 1;
+    }
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
+    /* ---- HEADER ---- */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
 
-        .card h2 {
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .header-left { display: flex; align-items: center; gap: 12px; }
 
-        .card h2::before {
-            font-size: 1.5rem;
-        }
+    .logo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--socialbuzz);
+      box-shadow: 0 0 12px var(--socialbuzz);
+    }
 
-        .saweria h2::before {
-            content: "🎁";
-        }
+    .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.06em; }
 
-        .bagibagi h2::before {
-            content: "📦";
-        }
+    .logo-sub {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+    .back-link {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--text-3);
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
 
-        label {
-            display: block;
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
+    /* ---- PAGE TITLE ---- */
+    .page-title { margin-bottom: 32px; }
+    .page-title h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 6px; }
+    .page-title p  { color: var(--text-3); font-size: 0.88rem; }
 
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-        }
+    /* ---- GRID ---- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 28px;
+    }
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+    @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
 
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
+    /* ---- CARD ---- */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.2s;
-        }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+    }
 
-        button:hover {
-            transform: translateY(-2px);
-        }
+    .card-socialbuzz { border-top: 2px solid var(--socialbuzz); }
+    .card-saweria    { border-top: 2px solid var(--saweria); }
+    .card-bagibagi   { border-top: 2px solid var(--bagibagi); }
 
-        button:active {
-            transform: translateY(0);
-        }
+    /* ---- card head ---- */
+    .card-head { display: flex; align-items: center; gap: 10px; }
+    .card-icon { font-size: 1.3rem; line-height: 1; }
+    .card-title { font-size: 1rem; font-weight: 800; color: var(--text); flex: 1; }
 
-        .status {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            display: none;
-        }
+    .badge {
+      font-size: 0.63rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+    }
+    .badge-socialbuzz { background: rgba(139,92,246,0.15); color: #b78af7; border: 1px solid rgba(139,92,246,0.25); }
+    .badge-saweria    { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+    .badge-bagibagi   { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
 
-        .status.success {
-            display: block;
-            background: #d4edda;
-            border: 1px solid #28a745;
-            color: #155724;
-        }
+    /* ---- endpoint box ---- */
+    .endpoint-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 9px 13px;
+    }
+    .ep-label {
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 4px;
+    }
+    .ep-url {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.76rem; color: var(--text-2);
+      word-break: break-all;
+    }
 
-        .status.error {
-            display: block;
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
+    /* ---- form ---- */
+    .form-body { display: flex; flex-direction: column; gap: 12px; flex: 1; }
 
-        .info-card {
-            background: #f0f4ff;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
+    .field { display: flex; flex-direction: column; gap: 5px; }
 
-        .info-card h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
+    .field label {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--text-3);
+    }
 
-        .info-card p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+    .field input,
+    .field textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.86rem;
+      width: 100%;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field textarea { min-height: 72px; }
 
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    /* focus rings per platform */
+    .card-socialbuzz .field input:focus,
+    .card-socialbuzz .field textarea:focus {
+      border-color: rgba(139,92,246,0.5);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.08);
+    }
+    .card-saweria .field input:focus,
+    .card-saweria .field textarea:focus {
+      border-color: rgba(239,68,68,0.5);
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
+    }
+    .card-bagibagi .field input:focus,
+    .card-bagibagi .field textarea:focus {
+      border-color: rgba(16,185,129,0.5);
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.08);
+    }
+
+    /* ---- button ---- */
+    .btn {
+      width: 100%; padding: 12px;
+      border: none; border-radius: var(--radius-sm);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      margin-top: 2px;
+    }
+    .btn:hover    { opacity: 0.86; transform: translateY(-1px); }
+    .btn:active   { transform: translateY(0); }
+    .btn:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+
+    .btn-socialbuzz { background: var(--socialbuzz); color: #fff; }
+    .btn-saweria    { background: var(--saweria);    color: #fff; }
+    .btn-bagibagi   { background: var(--bagibagi);   color: #fff; }
+
+    /* ---- status ---- */
+    .status { display: none; font-size: 0.8rem; padding: 9px 12px; border-radius: var(--radius-sm); line-height: 1.5; }
+    .status.success { display: block; background: rgba(16,185,129,0.1);  border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+    .status.error   { display: block; background: rgba(239,68,68,0.1);   border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
+
+    /* ---- bottom links ---- */
+    .bottom-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    .bottom-link {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--text-2); text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .bottom-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🧪 Webhook Tester</h1>
-            <p>Test donasi dari Saweria dan BagiBagi</p>
-        </header>
+<div class="wrap">
 
-        <div class="content">
-            <!-- Saweria Card -->
-            <div class="card saweria">
-                <h2>Saweria</h2>
-                
-                <div class="info-card">
-                    <h3>Endpoint</h3>
-                    <p id="saweriaUrl">/webhook/saweria</p>
-                </div>
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-left">
+      <span class="logo-dot"></span>
+      <span class="logo-text">UVASA</span>
+      <span class="logo-sub">webhook tester</span>
+    </div>
+    <a href="/" class="back-link">← Dashboard</a>
+  </div>
 
-                <form onsubmit="testSaweria(event)">
-                    <div class="form-group">
-                        <label>Nama Donatur</label>
-                        <input type="text" name="donator_name" value="Test Donor Saweria" required>
-                    </div>
+  <!-- TITLE -->
+  <div class="page-title">
+    <h1>🧪 Webhook Tester</h1>
+    <p>Simulasi donasi masuk dari SocialBuzz, Saweria, dan BagiBagi</p>
+  </div>
 
-                    <div class="form-group">
-                        <label>Jumlah (Rp)</label>
-                        <input type="number" name="amount_raw" value="50000" required>
-                    </div>
+  <!-- 3 CARDS -->
+  <div class="grid">
 
-                    <div class="form-group">
-                        <label>Pesan</label>
-                        <textarea name="message">Ini test donasi dari Saweria!</textarea>
-                    </div>
+    <!-- SOCIALBUZZ -->
+    <div class="card card-socialbuzz">
+      <div class="card-head">
+        <span class="card-icon">⚡</span>
+        <span class="card-title">SocialBuzz</span>
+        <span class="badge badge-socialbuzz">POST</span>
+      </div>
 
-                    <button type="submit">🚀 Test Saweria</button>
-                    <div class="status" id="saweriaStatus"></div>
-                </form>
-            </div>
+      <div class="endpoint-box">
+        <div class="ep-label">Endpoint</div>
+        <div class="ep-url" id="urlSocialbuzz">/webhook/socialbuzz</div>
+      </div>
 
-            <!-- BagiBagi Card -->
-            <div class="card bagibagi">
-                <h2>BagiBagi</h2>
-                
-                <div class="info-card">
-                    <h3>Endpoint</h3>
-                    <p id="bagibagiUrl">/webhook/bagibagi</p>
-                </div>
-
-                <form onsubmit="testBagiBagi(event)">
-                    <div class="form-group">
-                        <label>Nama Donatur</label>
-                        <input type="text" name="name" value="Test Donor BagiBagi" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Jumlah (Rp)</label>
-                        <input type="number" name="amount" value="75000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Pesan</label>
-                        <textarea name="message">Ini test donasi dari BagiBagi!</textarea>
-                    </div>
-
-                    <button type="submit">🚀 Test BagiBagi</button>
-                    <div class="status" id="bagibagiStatus"></div>
-                </form>
-            </div>
+      <form class="form-body" onsubmit="testSocialbuzz(event)">
+        <div class="field">
+          <label>Nama Supporter</label>
+          <input type="text" name="supporter" value="TestUser123" required />
         </div>
-
-        <!-- Links -->
-        <div style="text-align: center; color: white; gap: 20px; display: flex; justify-content: center; flex-wrap: wrap;">
-            <a href="/" style="color: white; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; text-decoration: none;">📊 Lihat History</a>
-            <a href="/data" style="color: white; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; text-decoration: none;">📈 Raw Data</a>
+        <div class="field">
+          <label>Jumlah (Rp)</label>
+          <input type="number" name="amount" value="50000" min="1" required />
         </div>
+        <div class="field">
+          <label>Pesan</label>
+          <textarea name="message">Halo dari SocialBuzz! ⚡</textarea>
+        </div>
+        <button type="submit" class="btn btn-socialbuzz">🚀 Test SocialBuzz</button>
+        <div class="status" id="statusSocialbuzz"></div>
+      </form>
     </div>
 
-    <script>
-        async function testSaweria(event) {
-            event.preventDefault();
-            const form = event.target;
-            const data = {
-                donator_name: form.donator_name.value,
-                amount_raw: parseInt(form.amount_raw.value),
-                message: form.message.value
-            };
+    <!-- SAWERIA -->
+    <div class="card card-saweria">
+      <div class="card-head">
+        <span class="card-icon">💸</span>
+        <span class="card-title">Saweria</span>
+        <span class="badge badge-saweria">POST</span>
+      </div>
 
-            try {
-                const response = await fetch('/webhook/saweria', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+      <div class="endpoint-box">
+        <div class="ep-label">Endpoint</div>
+        <div class="ep-url" id="urlSaweria">/webhook/saweria</div>
+      </div>
 
-                const status = document.getElementById('saweriaStatus');
-                if (response.ok) {
-                    status.className = 'status success';
-                    status.textContent = '✅ Testing Saweria berhasil! Cek halaman utama untuk melihat donasi.';
-                } else {
-                    status.className = 'status error';
-                    status.textContent = '❌ Error: ' + response.statusText;
-                }
-            } catch (error) {
-                const status = document.getElementById('saweriaStatus');
-                status.className = 'status error';
-                status.textContent = '❌ Error: ' + error.message;
-            }
-        }
+      <form class="form-body" onsubmit="testSaweria(event)">
+        <div class="field">
+          <label>Nama Donatur</label>
+          <input type="text" name="donator_name" value="TestDonor Saweria" required />
+        </div>
+        <div class="field">
+          <label>Jumlah (Rp)</label>
+          <input type="number" name="amount_raw" value="75000" min="1" required />
+        </div>
+        <div class="field">
+          <label>Pesan</label>
+          <textarea name="message">Halo dari Saweria! 💸</textarea>
+        </div>
+        <button type="submit" class="btn btn-saweria">🚀 Test Saweria</button>
+        <div class="status" id="statusSaweria"></div>
+      </form>
+    </div>
 
-        async function testBagiBagi(event) {
-            event.preventDefault();
-            const form = event.target;
-            const data = {
-                name: form.name.value,
-                amount: parseInt(form.amount.value),
-                message: form.message.value
-            };
+    <!-- BAGIBAGI -->
+    <div class="card card-bagibagi">
+      <div class="card-head">
+        <span class="card-icon">🎁</span>
+        <span class="card-title">BagiBagi</span>
+        <span class="badge badge-bagibagi">POST</span>
+      </div>
 
-            try {
-                const response = await fetch('/webhook/bagibagi', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+      <div class="endpoint-box">
+        <div class="ep-label">Endpoint</div>
+        <div class="ep-url" id="urlBagibagi">/webhook/bagibagi</div>
+      </div>
 
-                const status = document.getElementById('bagibagiStatus');
-                if (response.ok) {
-                    status.className = 'status success';
-                    status.textContent = '✅ Testing BagiBagi berhasil! Cek halaman utama untuk melihat donasi.';
-                } else {
-                    status.className = 'status error';
-                    status.textContent = '❌ Error: ' + response.statusText;
-                }
-            } catch (error) {
-                const status = document.getElementById('bagibagiStatus');
-                status.className = 'status error';
-                status.textContent = '❌ Error: ' + error.message;
-            }
-        }
+      <form class="form-body" onsubmit="testBagibagi(event)">
+        <div class="field">
+          <label>Nama Donatur</label>
+          <input type="text" name="name" value="TestDonor BagiBagi" required />
+        </div>
+        <div class="field">
+          <label>Jumlah (Rp)</label>
+          <input type="number" name="amount" value="100000" min="1" required />
+        </div>
+        <div class="field">
+          <label>Pesan</label>
+          <textarea name="message">Halo dari BagiBagi! 🎁</textarea>
+        </div>
+        <button type="submit" class="btn btn-bagibagi">🚀 Test BagiBagi</button>
+        <div class="status" id="statusBagibagi"></div>
+      </form>
+    </div>
 
-        // Show current hostname/domain
-        window.addEventListener('load', () => {
-            const baseUrl = window.location.origin;
-            document.getElementById('saweriaUrl').textContent = baseUrl + '/webhook/saweria';
-            document.getElementById('bagibagiUrl').textContent = baseUrl + '/webhook/bagibagi';
-        });
-    </script>
+  </div><!-- /grid -->
+
+  <!-- BOTTOM LINKS -->
+  <div class="bottom-links">
+    <a href="/" class="bottom-link">📊 Dashboard</a>
+    <a href="/data" class="bottom-link" target="_blank">📦 Raw /data</a>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+  // update full URLs
+  window.addEventListener('load', () => {
+    const base = window.location.origin;
+    document.getElementById('urlSocialbuzz').textContent = base + '/webhook/socialbuzz';
+    document.getElementById('urlSaweria').textContent    = base + '/webhook/saweria';
+    document.getElementById('urlBagibagi').textContent   = base + '/webhook/bagibagi';
+  });
+
+  // generic fetch helper
+  async function send(endpoint, payload, statusId, btn) {
+    const el = document.getElementById(statusId);
+    el.className = 'status';
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = '⏳ Mengirim...';
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        el.className = 'status success';
+        el.textContent = '✅ Berhasil! Cek dashboard untuk melihat donasi masuk.';
+      } else {
+        const txt = await res.text();
+        el.className = 'status error';
+        el.textContent = `❌ Error ${res.status}: ${txt}`;
+      }
+    } catch (err) {
+      el.className = 'status error';
+      el.textContent = '❌ Gagal terhubung: ' + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+  }
+
+  // SocialBuzz — field: supporter, amount, message
+  function testSocialbuzz(e) {
+    e.preventDefault();
+    const f = e.target;
+    send('/webhook/socialbuzz', {
+      supporter: f.supporter.value,
+      amount:    parseInt(f.amount.value),
+      message:   f.message.value,
+    }, 'statusSocialbuzz', f.querySelector('button'));
+  }
+
+  // Saweria — field: donator_name, amount_raw, message
+  function testSaweria(e) {
+    e.preventDefault();
+    const f = e.target;
+    send('/webhook/saweria', {
+      donator_name: f.donator_name.value,
+      amount_raw:   parseInt(f.amount_raw.value),
+      message:      f.message.value,
+    }, 'statusSaweria', f.querySelector('button'));
+  }
+
+  // BagiBagi — field: name, amount, message
+  function testBagibagi(e) {
+    e.preventDefault();
+    const f = e.target;
+    send('/webhook/bagibagi', {
+      name:    f.name.value,
+      amount:  parseInt(f.amount.value),
+      message: f.message.value,
+    }, 'statusBagibagi', f.querySelector('button'));
+  }
+</script>
 </body>
 </html>
