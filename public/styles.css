@@ -458,11 +458,10 @@ body {
 
 /* log line layout: time | badge | info | amount */
 .history-item {
-  display: grid;
-  grid-template-columns: 64px 80px 1fr auto;
+  display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 14px;
+  padding: 9px 14px;
   border-bottom: 1px solid var(--border);
   font-size: 11px;
   animation: fadeSlideIn 0.2s ease;
@@ -472,18 +471,32 @@ body {
 .history-item:hover { background: var(--surface2); }
 .history-item:last-child { border-bottom: none; }
 
-.hi-platform { display: none; }
+/* colored left accent bar */
+.hi-platform {
+  width: 3px;
+  height: 32px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.hi-platform.socialbuzz { background: var(--socialbuzz); }
+.hi-platform.saweria    { background: var(--saweria); }
+.hi-platform.bagibagi   { background: var(--bagibagi); }
+
+/* info takes all remaining space */
+.hi-info { flex: 1; min-width: 0; }
+
+.hi-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
 
 .hi-time {
   font-size: 10px;
   font-weight: 300;
   color: var(--text-3);
   white-space: nowrap;
-}
-
-.hi-meta {
-  display: flex;
-  align-items: center;
 }
 
 .hi-platform-label {
@@ -556,6 +569,6 @@ body {
   .history-card { padding-left: 14px; padding-right: 14px; }
   .main-grid    { grid-template-columns: 1fr; margin-left: 14px; margin-right: 14px; }
   .latest-amount { font-size: 26px; }
-  .history-item { grid-template-columns: 54px 72px 1fr auto; gap: 8px; }
-  .hi-message   { max-width: 100px; }
+  .history-item { gap: 8px; padding: 8px 12px; }
+  .hi-message   { max-width: 120px; }
 }
