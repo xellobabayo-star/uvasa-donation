@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2::before {
+            font-size: 1.5rem;
+        }
+
+        .saweria h2::before {
+            content: "🎁";
+        }
+
+        .bagibagi h2::before {
+            content: "📦";
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .status.success {
+            display: block;
+            background: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .status.error {
+            display: block;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .info-card {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 Webhook Tester</h1>
+            <p>Test donasi dari Saweria dan BagiBagi</p>
+        </header>
+
+        <div class="content">
+            <!-- Saweria Card -->
+            <div class="card saweria">
+                <h2>Saweria</h2>
+                
+                <div class="info-card">
+                    <h3>Endpoint</h3>
+                    <p id="saweriaUrl">/webhook/saweria</p>
+                </div>
+
+                <form onsubmit="testSaweria(event)">
+                    <div class="form-group">
+                        <label>Nama Donatur</label>
+                        <input type="text" name="donator_name" value="Test Donor Saweria" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jumlah (Rp)</label>
+                        <input type="number" name="amount_raw" value="50000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pesan</label>
+                        <textarea name="message">Ini test donasi dari Saweria!</textarea>
+                    </div>
+
+                    <button type="submit">🚀 Test Saweria</button>
+                    <div class="status" id="saweriaStatus"></div>
+                </form>
+            </div>
+
+            <!-- BagiBagi Card -->
+            <div class="card bagibagi">
+                <h2>BagiBagi</h2>
+                
+                <div class="info-card">
+                    <h3>Endpoint</h3>
+                    <p id="bagibagiUrl">/webhook/bagibagi</p>
+                </div>
+
+                <form onsubmit="testBagiBagi(event)">
+                    <div class="form-group">
+                        <label>Nama Donatur</label>
+                        <input type="text" name="name" value="Test Donor BagiBagi" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jumlah (Rp)</label>
+                        <input type="number" name="amount" value="75000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pesan</label>
+                        <textarea name="message">Ini test donasi dari BagiBagi!</textarea>
+                    </div>
+
+                    <button type="submit">🚀 Test BagiBagi</button>
+                    <div class="status" id="bagibagiStatus"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div style="text-align: center; color: white; gap: 20px; display: flex; justify-content: center; flex-wrap: wrap;">
+            <a href="/" style="color: white; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; text-decoration: none;">📊 Lihat History</a>
+            <a href="/data" style="color: white; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; text-decoration: none;">📈 Raw Data</a>
+        </div>
+    </div>
+
+    <script>
+        async function testSaweria(event) {
+            event.preventDefault();
+            const form = event.target;
+            const data = {
+                donator_name: form.donator_name.value,
+                amount_raw: parseInt(form.amount_raw.value),
+                message: form.message.value
+            };
+
+            try {
+                const response = await fetch('/webhook/saweria', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const status = document.getElementById('saweriaStatus');
+                if (response.ok) {
+                    status.className = 'status success';
+                    status.textContent = '✅ Testing Saweria berhasil! Cek halaman utama untuk melihat donasi.';
+                } else {
+                    status.className = 'status error';
+                    status.textContent = '❌ Error: ' + response.statusText;
+                }
+            } catch (error) {
+                const status = document.getElementById('saweriaStatus');
+                status.className = 'status error';
+                status.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        async function testBagiBagi(event) {
+            event.preventDefault();
+            const form = event.target;
+            const data = {
+                name: form.name.value,
+                amount: parseInt(form.amount.value),
+                message: form.message.value
+            };
+
+            try {
+                const response = await fetch('/webhook/bagibagi', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const status = document.getElementById('bagibagiStatus');
+                if (response.ok) {
+                    status.className = 'status success';
+                    status.textContent = '✅ Testing BagiBagi berhasil! Cek halaman utama untuk melihat donasi.';
+                } else {
+                    status.className = 'status error';
+                    status.textContent = '❌ Error: ' + response.statusText;
+                }
+            } catch (error) {
+                const status = document.getElementById('bagibagiStatus');
+                status.className = 'status error';
+                status.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        // Show current hostname/domain
+        window.addEventListener('load', () => {
+            const baseUrl = window.location.origin;
+            document.getElementById('saweriaUrl').textContent = baseUrl + '/webhook/saweria';
+            document.getElementById('bagibagiUrl').textContent = baseUrl + '/webhook/bagibagi';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Tracker - Multi Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>💝 Donation Tracker</h1>
+            <p>Multi-Platform Donation History</p>
+        </header>
+
+        <!-- Platform Stats -->
+        <section class="stats">
+            <div class="stat-card">
+                <h3>SocialBuzz</h3>
+                <p class="platform-badge">💬</p>
+            </div>
+            <div class="stat-card">
+                <h3>Saweria</h3>
+                <p class="platform-badge">🎁</p>
+            </div>
+            <div class="stat-card">
+                <h3>BagiBagi</h3>
+                <p class="platform-badge">📦</p>
+            </div>
+        </section>
+
+        <!-- Latest Donation -->
+        <section class="latest-donation">
+            <h2>📌 Latest Donation</h2>
+            <div class="donation-box" id="latestDonation">
+                <p class="loading">Loading donation data...</p>
+            </div>
+        </section>
+
+        <!-- Donation History -->
+        <section class="history">
+            <h2>📜 Donation History</h2>
+            <div class="history-container">
+                <div id="historyList" class="history-list">
+                    <p class="loading">Loading history...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Multi-Platform Donation Tracker</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
