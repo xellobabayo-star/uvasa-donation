@@ -455,17 +455,17 @@
   <div class="page-header">
     <div class="header-left">
       <span class="logo-dot"></span>
-      <span class="logo-text">DXCodeStudio</span>
-      <span class="logo-sub">webhook + Fake Donation</span>
+      <span class="logo-text">DXCODESTUDIO</span>
+      <span class="logo-sub">WEBHOOK - FAKE DONATION</span>
     </div>
     <div class="header-right">
-      <a href="/" class="back-link">← Dashboard</a>
+      <a href="/" class="back-link">DASHBOARD</a>
     </div>
   </div>
 
   <!-- TITLE -->
   <div class="page-title">
-    <h1>Webhook + Fake Donation</h1>
+    <h1>WEBHOOK - FAKE DONATION</h1>
     <p>Simulasi donasi masuk — hasil langsung tampil di preview kanan</p>
   </div>
 
@@ -491,17 +491,17 @@
           <form class="form-body" id="formSocialbuzz" onsubmit="testSocialbuzz(event)">
             <div class="field">
               <label>Nama Supporter</label>
-              <input type="text" name="supporter" value="TestUser123" required />
+              <input type="text" name="supporter" value="username" required />
             </div>
             <div class="field">
               <label>Jumlah (Rp)</label>
-              <input type="number" name="amount" value="50000" min="1" required />
+              <input type="number" name="amount" value="10000" min="1" required />
             </div>
             <div class="field">
               <label>Pesan</label>
-              <textarea name="message">Halo dari SocialBuzz! ⚡</textarea>
+              <textarea name="message">Halo dari SocialBuzz!</textarea>
             </div>
-            <button type="submit" class="btn btn-socialbuzz">▶ Test SocialBuzz</button>
+            <button type="submit" class="btn btn-socialbuzz">FAKE DONATION</button>
             <div class="status" id="statusSocialbuzz"></div>
           </form>
         </div>
@@ -520,17 +520,17 @@
           <form class="form-body" id="formSaweria" onsubmit="testSaweria(event)">
             <div class="field">
               <label>Nama Donatur</label>
-              <input type="text" name="donator_name" value="TestDonor Saweria" required />
+              <input type="text" name="donator_name" value="username" required />
             </div>
             <div class="field">
               <label>Jumlah (Rp)</label>
-              <input type="number" name="amount_raw" value="75000" min="1" required />
+              <input type="number" name="amount_raw" value="10000" min="1" required />
             </div>
             <div class="field">
               <label>Pesan</label>
-              <textarea name="message">Halo dari Saweria! 💸</textarea>
+              <textarea name="message">Halo dari Saweria!</textarea>
             </div>
-            <button type="submit" class="btn btn-saweria">▶ Test Saweria</button>
+            <button type="submit" class="btn btn-saweria">FAKE DONATION</button>
             <div class="status" id="statusSaweria"></div>
           </form>
         </div>
@@ -549,17 +549,17 @@
           <form class="form-body" id="formBagibagi" onsubmit="testBagibagi(event)">
             <div class="field">
               <label>Nama Donatur</label>
-              <input type="text" name="name" value="TestDonor BagiBagi" required />
+              <input type="text" name="name" value="username" required />
             </div>
             <div class="field">
               <label>Jumlah (Rp)</label>
-              <input type="number" name="amount" value="100000" min="1" required />
+              <input type="number" name="amount" value="1000" min="1" required />
             </div>
             <div class="field">
               <label>Pesan</label>
-              <textarea name="message">Halo dari BagiBagi! 🎁</textarea>
+              <textarea name="message">Halo dari BagiBagi!</textarea>
             </div>
-            <button type="submit" class="btn btn-bagibagi">▶ Test BagiBagi</button>
+            <button type="submit" class="btn btn-bagibagi">FAKE DONATION</button>
             <div class="status" id="statusBagibagi"></div>
           </form>
         </div>
@@ -569,7 +569,7 @@
       <!-- FIRE ALL -->
       <div class="fire-all-wrap">
         <button class="btn-fire-all" id="btnFireAll" onclick="fireAll()">
-          ▶▶ Kirim Semua Platform Sekarang
+          Kirim Semua Platform Sekarang
         </button>
         <span class="fire-status" id="fireStatus"></span>
       </div>
@@ -582,7 +582,7 @@
         <div class="preview-header">
           <div class="preview-title">
             <span class="preview-dot"></span>
-            Live Preview
+            LIVE PRIVIEW
           </div>
           <button class="preview-refresh-btn" id="refreshBtn" onclick="manualRefresh()">↻ Refresh</button>
         </div>
@@ -609,8 +609,8 @@
 
   <!-- BOTTOM LINKS -->
   <div class="bottom-links">
-    <a href="/" class="bottom-link">📊 Dashboard</a>
-    <a href="/data" class="bottom-link" target="_blank">📦 Raw /data</a>
+    <a href="/" class="bottom-link">Dashboard</a>
+    <a href="/data" class="bottom-link" target="_blank">Raw /data</a>
   </div>
 
 </div><!-- /wrap -->
@@ -641,7 +641,7 @@
 
   function renderPreview(data, flash = false) {
     const p   = (data.platform || 'unknown').toLowerCase();
-    const lbl = { socialbuzz: '⚡ SocialBuzz', saweria: '💸 Saweria', bagibagi: '🎁 BagiBagi' }[p] || p;
+    const lbl = { socialbuzz: 'SocialBuzz', saweria: 'Saweria', bagibagi: 'BagiBagi' }[p] || p;
 
     document.getElementById('previewWaiting').style.display = 'none';
     const result = document.getElementById('previewResult');
@@ -686,7 +686,7 @@
     el.className = 'status';
     const orig = btn.textContent;
     btn.disabled = true;
-    btn.textContent = '⏳ Mengirim...';
+    btn.textContent = 'Mengirim...';
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -695,12 +695,12 @@
       });
       if (res.ok) {
         el.className = 'status success';
-        el.textContent = '✓ Berhasil!';
+        el.textContent = 'Berhasil!';
         setTimeout(() => { lastPreviewKey = null; pollPreview(); }, 300);
       } else {
         const txt = await res.text();
         el.className = 'status error';
-        el.textContent = `✕ Error ${res.status}: ${txt}`;
+        el.textContent = `Error ${res.status}: ${txt}`;
       }
     } catch (err) {
       el.className = 'status error';

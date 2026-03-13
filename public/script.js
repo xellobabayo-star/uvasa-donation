@@ -49,9 +49,9 @@ function renderLatest(d) {
 
   const platformClass = (d.platform || 'unknown').toLowerCase();
   const platformLabel = {
-    socialbuzz: '⚡ SocialBuzz',
-    saweria:    '💸 Saweria',
-    bagibagi:   '🎁 BagiBagi',
+    socialbuzz: 'SCOIALBUZZ',
+    saweria:    'SAWERIA',
+    bagibagi:   'BAGI - BAGI',
   }[platformClass] || d.platform;
 
   document.getElementById('latestPlatform').textContent  = platformLabel;
