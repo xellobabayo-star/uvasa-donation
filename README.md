@@ -1,170 +1,260 @@
-# 🎁 Multi-Platform Donation Webhook Tracker
+<div align="center">
 
-Aplikasi untuk menangani webhook donasi dari **SocialBuzz**, **Saweria**, dan **BagiBagi** dalam satu tempat.
+```
+███╗   ██╗██╗   ██╗██╗   ██╗ █████╗ ███████╗ █████╗
+████╗  ██║██║   ██║██║   ██║██╔══██╗██╔════╝██╔══██╗
+██╔██╗ ██║██║   ██║██║   ██║███████║███████╗███████║
+██║╚██╗██║██║   ██║╚██╗ ██╔╝██╔══██║╚════██║██╔══██║
+██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║███████║██║  ██║
+╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+```
 
-## ✨ Fitur
+### 🎁 Multi-Platform Donation Webhook Tracker
 
-- ✅ Support 3 platform donasi (SocialBuzz, Saweria, BagiBagi)
-- ✅ Real-time donation tracking
-- ✅ Donation history dengan localStorage
-- ✅ Web dashboard untuk melihat donasi
-- ✅ Webhook tester built-in
-- ✅ Responsive design
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com)
+[![License](https://img.shields.io/badge/License-MIT-ff6b9d?style=for-the-badge)](LICENSE)
+
+> **Satu server untuk semua donasi — SocialBuzz, Saweria, dan BagiBagi terpusat dalam satu dashboard real-time.**
+
+</div>
 
 ---
 
-## 🚀 Deploy ke Vercel (Recommended)
+## ✨ Fitur Unggulan
 
-### Step 1: Siapkan Repository
+<table>
+<tr>
+<td width="50%">
+
+### 🔗 Multi-Platform
+- Support **SocialBuzz**, **Saweria**, **BagiBagi**
+- Satu URL, tiga platform sekaligus
+- Webhook verification per platform
+- Auto-detect format payload
+
+</td>
+<td width="50%">
+
+### 📊 Real-Time Dashboard
+- Live donation feed tanpa refresh
+- History donasi dengan localStorage
+- Jumlah & nominal donasi terakumulasi
+- Responsive di mobile & desktop
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🧪 Built-in Tester
+- Test webhook tanpa setup external
+- Simulasi payload tiap platform
+- Debug mode dengan log detail
+- JSON response viewer
+
+</td>
+<td width="50%">
+
+### ☁️ Deploy-Ready
+- Zero-config Vercel deployment
+- Environment variable support
+- Serverless compatible
+- Auto HTTPS dari Vercel
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🖥️ Preview Dashboard
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎁 NUVASA — Donation Tracker              [ LIVE ● ]        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│   💰 Total Hari Ini        📦 Total Donasi                   │
+│   ─────────────────        ────────────────                  │
+│      Rp 850.000                  12                          │
+│                                                              │
+├──────────────────────────────────────────────────────────────┤
+│  📋 Donasi Terbaru                                           │
+│                                                              │
+│  ● [SAWERIA]     Budi Santoso    Rp 50.000   "Gas terus!"   │
+│  ● [BAGIBAGI]    Anonim          Rp 10.000   "Semangat"     │
+│  ● [SOCIALBUZZ]  Rizky_dev       Rp 100.000  "Keep coding"  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Deploy ke Vercel
+
+### 1 — Clone & Push ke GitHub
+
 ```bash
 git init
 git add .
-git commit -m "Initial commit"
-```
-
-### Step 2: Push ke GitHub
-1. Buat repository baru di GitHub
-2. Push code Anda:
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git commit -m "feat: initial commit"
+git remote add origin https://github.com/YOUR_USERNAME/nuvasa.git
 git branch -M main
 git push -u origin main
 ```
 
-### Step 3: Deploy ke Vercel
-1. Kunjungi https://vercel.com
-2. Click **"New Project"**
-3. Import GitHub repository Anda
-4. Vercel akan auto-detect Next.js/Node.js config
-5. Click **Deploy**
+### 2 — Deploy
 
-### Step 4: Setup Environment Variables di Vercel Dashboard
-1. Buka project settings
-2. Ke tab **Environment Variables**
-3. Tambahkan:
-   - `SAWERIA_STREAMING_KEY` = Your Saweria key
-   - `BAGIBAGI_WEBHOOK_TOKEN` = Your BagiBagi token
-4. Redeploy
+```bash
+# Pakai Vercel CLI
+npm i -g vercel
+vercel
+```
+
+Atau lewat dashboard: [vercel.com](https://vercel.com) → **New Project** → Import GitHub repo → **Deploy** ✅
+
+### 3 — Set Environment Variables
+
+Di Vercel Dashboard → **Project Settings** → **Environment Variables**:
+
+```env
+SAWERIA_STREAMING_KEY     =  your_saweria_key
+BAGIBAGI_WEBHOOK_TOKEN    =  your_bagibagi_token
+```
+
+Redeploy setelah set env. Done! 🎉
 
 ---
 
-## 📌 Webhook URLs (Setelah Deploy ke Vercel)
+## 📌 Webhook URLs
 
-Vercel akan memberi URL seperti: `https://your-project.vercel.app`
+Setelah deploy, URL kamu akan jadi `https://your-project.vercel.app`
 
-**Gunakan di Dashboard Saweria:**
-```
-https://your-project.vercel.app/webhook/saweria
-```
+| Platform | Webhook URL |
+|----------|------------|
+| 🟡 **Saweria** | `https://your-project.vercel.app/webhook/saweria` |
+| 🟢 **BagiBagi** | `https://your-project.vercel.app/webhook/bagibagi` |
+| 🔵 **SocialBuzz** | `https://your-project.vercel.app/webhook/socialbuzz` |
 
-**Gunakan di Dashboard BagiBagi:**
-```
-https://your-project.vercel.app/webhook/bagibagi
-```
+---
+
+## ⚙️ Setup Per Platform
+
+<details>
+<summary><b>🟡 Saweria</b></summary>
+
+1. Login ke [saweria.co](https://saweria.co)
+2. **Integration** → **Webhook** → Enable HTTP Webhook
+3. Masukkan URL: `https://your-project.vercel.app/webhook/saweria`
+4. Copy **Streaming Key** dari settings
+5. Tambahkan ke Vercel env sebagai `SAWERIA_STREAMING_KEY`
+
+</details>
+
+<details>
+<summary><b>🟢 BagiBagi</b></summary>
+
+1. Login ke [bagibagi.co](https://bagibagi.co)
+2. **Stream Overlay** → **Integration** → **Custom Webhook**
+3. Masukkan URL: `https://your-project.vercel.app/webhook/bagibagi`
+4. Copy **Webhook Token** dari settings
+5. Tambahkan ke Vercel env sebagai `BAGIBAGI_WEBHOOK_TOKEN`
+
+</details>
+
+<details>
+<summary><b>🔵 SocialBuzz</b></summary>
+
+1. Login ke SocialBuzz dashboard
+2. Buka **Settings** → **Webhook Integration**
+3. Masukkan URL: `https://your-project.vercel.app/webhook/socialbuzz`
+4. Tidak butuh env variable tambahan
+
+</details>
 
 ---
 
 ## 🧪 Testing Lokal
 
-### Prerequisites
 ```bash
+# Install dependencies
 npm install
-```
 
-### Jalankan Server
-```bash
+# Copy konfigurasi
+cp .env.example .env
+
+# Jalankan server
 npm start
 ```
 
-### Test Webhook
-Buka browser:
-```
-http://localhost:3000/webhook-test.html
-```
-
-### Lihat Dashboard
-```
-http://localhost:3000
-```
+| URL | Deskripsi |
+|-----|-----------|
+| `http://localhost:3000` | Dashboard utama |
+| `http://localhost:3000/webhook-test.html` | Webhook tester |
+| `http://localhost:3000/data` | Raw JSON data donasi |
 
 ---
 
-## 📂 Project Structure
+## 📡 API Endpoints
+
+| Method | Endpoint | Auth | Deskripsi |
+|--------|----------|------|-----------|
+| `GET` | `/` | — | Dashboard |
+| `GET` | `/data` | — | JSON donasi terbaru |
+| `GET` | `/webhook-test.html` | — | Testing page |
+| `POST` | `/webhook/saweria` | Header key | Terima donasi Saweria |
+| `POST` | `/webhook/bagibagi` | Token | Terima donasi BagiBagi |
+| `POST` | `/webhook/socialbuzz` | — | Terima donasi SocialBuzz |
+
+---
+
+## 📁 Struktur Project
 
 ```
-Nuvasa-main/
-├── server.js              # Main Express server
-├── package.json           # Dependencies
-├── vercel.json           # Vercel configuration
-├── .env.example          # Environment variables template
+nuvasa/
+├── server.js               ← Express server + webhook handlers
+├── package.json
+├── vercel.json             ← Vercel serverless config
+├── .env.example            ← Template environment variables
 └── public/
-    ├── index.html        # Dashboard/Landing page
-    ├── webhook-test.html # Webhook tester
-    ├── styles.css        # Styling
-    └── script.js         # Client-side logic
+    ├── index.html          ← Dashboard real-time
+    ├── webhook-test.html   ← Built-in webhook tester
+    ├── styles.css          ← UI styling
+    └── script.js           ← Client-side logic
 ```
 
 ---
 
-## 🔧 Konfigurasi Saweria
+## 🛠️ Tech Stack
 
-1. Login ke https://saweria.co
-2. Buka **Integration** → **Webhook**
-3. Enable HTTP Webhook
-4. Masukkan URL: `https://your-project.vercel.app/webhook/saweria`
-5. Dapatkan **Streaming Key** dari settings
-6. Set di Vercel environment variable `SAWERIA_STREAMING_KEY`
-
----
-
-## 🔧 Konfigurasi BagiBagi
-
-1. Login ke https://bagibagi.co
-2. Buka **Stream Overlay** → **Integration**
-3. Tab **Custom Webhook Integration**
-4. Masukkan URL: `https://your-project.vercel.app/webhook/bagibagi`
-5. Dapatkan **Webhook Token** dari settings
-6. Set di Vercel environment variable `BAGIBAGI_WEBHOOK_TOKEN`
+| Layer | Teknologi |
+|-------|-----------|
+| Runtime | Node.js 18+ |
+| Framework | Express.js |
+| Storage | localStorage (client-side) |
+| Deploy | Vercel Serverless |
+| Realtime | Polling / SSE |
 
 ---
 
-## 📊 Endpoints
-
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| GET | `/` | Dashboard |
-| GET | `/data` | JSON data donasi terakhir |
-| GET | `/webhook-test.html` | Testing page |
-| POST | `/webhook/saweria` | Saweria webhook |
-| POST | `/webhook/bagibagi` | BagiBagi webhook |
-| POST | `/webhook/socialbuzz` | SocialBuzz webhook |
-
----
-
-## 🛠️ Environment Variables
-
-Buat file `.env` lokal (copy dari `.env.example`):
+## 🔧 Konfigurasi `.env`
 
 ```env
-SAWERIA_STREAMING_KEY=your_key_here
-BAGIBAGI_WEBHOOK_TOKEN=your_token_here
+# ─── Saweria ──────────────────────────────────
+SAWERIA_STREAMING_KEY=your_saweria_streaming_key
+
+# ─── BagiBagi ─────────────────────────────────
+BAGIBAGI_WEBHOOK_TOKEN=your_bagibagi_token
 ```
 
 ---
 
-## 📝 License
+<div align="center">
 
-MIT License - Bebas digunakan dan dimodifikasi
+**Made with ❤️ — Satu server, semua platform donasi.**
 
----
+*Dibuat untuk streamer & content creator Indonesia.*
 
-## 👨‍💻 Support
-
-Untuk bantuan atau error, cek console di:
-- Browser: F12 → Console
-- Server: Terminal output
-- Vercel: Dashboard → Deployments → Logs
-
----
-
-**Selamat! Aplikasi Anda siap untuk menerima donasi dari 3 platform! 🎉**
+</div>
