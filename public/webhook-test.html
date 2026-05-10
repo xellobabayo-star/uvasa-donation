@@ -22,6 +22,7 @@
       --socialbuzz: #7c6af5;
       --saweria:    #f85149;
       --bagibagi:   #3fb950;
+      --robux:      #00a2ff;
       --text:       #cdd9e5;
       --text-2:     #768390;
       --text-3:     #3d4f5e;
@@ -159,11 +160,11 @@
 
     .forms-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
-    @media (max-width: 680px) { .forms-grid { grid-template-columns: 1fr; } }
-
+    @media (max-width: 900px) { .forms-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .forms-grid { grid-template-columns: 1fr; } }
     /* =========================================
        CARD BASE
     ========================================= */
@@ -180,6 +181,7 @@
     .card-socialbuzz { border-top: 2px solid var(--socialbuzz); }
     .card-saweria    { border-top: 2px solid var(--saweria); }
     .card-bagibagi   { border-top: 2px solid var(--bagibagi); }
+    .card-robux      { border-top: 2px solid var(--robux); }
 
     /* ---- card head ---- */
     .card-head {
@@ -203,6 +205,7 @@
     .badge-socialbuzz { background: rgba(124,106,245,0.12); color: #9d8ef5; border: 1px solid rgba(124,106,245,0.2); }
     .badge-saweria    { background: rgba(248,81,73,0.12);   color: #fa8680; border: 1px solid rgba(248,81,73,0.2); }
     .badge-bagibagi   { background: rgba(63,185,80,0.12);   color: #56d364; border: 1px solid rgba(63,185,80,0.2); }
+    .badge-robux      { background: rgba(0,162,255,0.12);   color: #33b8ff; border: 1px solid rgba(0,162,255,0.2); }
 
     /* ---- endpoint box ---- */
     .endpoint-box {
@@ -250,6 +253,8 @@
       border-color: rgba(248,81,73,0.45); }
     .card-bagibagi .field input:focus, .card-bagibagi .field textarea:focus {
       border-color: rgba(63,185,80,0.45); }
+    .card-robux .field input:focus, .card-robux .field textarea:focus {
+      border-color: rgba(0,162,255,0.45); }
 
     /* ---- submit button ---- */
     .btn {
@@ -267,6 +272,7 @@
     .btn-socialbuzz { background: rgba(124,106,245,0.12); color: #9d8ef5; border: 1px solid rgba(124,106,245,0.3); }
     .btn-saweria    { background: rgba(248,81,73,0.12);   color: #fa8680; border: 1px solid rgba(248,81,73,0.3); }
     .btn-bagibagi   { background: rgba(63,185,80,0.12);   color: #56d364; border: 1px solid rgba(63,185,80,0.3); }
+    .btn-robux      { background: rgba(0,162,255,0.12);   color: #33b8ff; border: 1px solid rgba(0,162,255,0.3); }
 
     /* ---- status ---- */
     .status {
@@ -380,6 +386,7 @@
     .preview-platform-tag.socialbuzz { background: rgba(124,106,245,0.12); color: #9d8ef5; border: 1px solid rgba(124,106,245,0.25); }
     .preview-platform-tag.saweria    { background: rgba(248,81,73,0.12);   color: #fa8680; border: 1px solid rgba(248,81,73,0.25); }
     .preview-platform-tag.bagibagi   { background: rgba(63,185,80,0.12);   color: #56d364; border: 1px solid rgba(63,185,80,0.25); }
+    .preview-platform-tag.robux      { background: rgba(0,162,255,0.12);   color: #33b8ff; border: 1px solid rgba(0,162,255,0.25); }
 
     .preview-amount {
       font-size: 26px; font-weight: 300;
@@ -564,6 +571,35 @@
           </form>
         </div>
 
+        <!-- ROBUX -->
+        <div class="card card-robux">
+          <div class="card-head">
+            <span class="card-icon">🟦</span>
+            <span class="card-title">Robux</span>
+            <span class="badge badge-robux">POST</span>
+          </div>
+          <div class="endpoint-box">
+            <div class="ep-label">Endpoint</div>
+            <div class="ep-url" id="urlRobux">/webhook/robux</div>
+          </div>
+          <form class="form-body" id="formRobux" onsubmit="testRobux(event)">
+            <div class="field">
+              <label>Roblox Username</label>
+              <input type="text" name="username" value="RobloxUser" required />
+            </div>
+            <div class="field">
+              <label>Jumlah (R$)</label>
+              <input type="number" name="amount" value="100" min="1" required />
+            </div>
+            <div class="field">
+              <label>Pesan</label>
+              <textarea name="message">Thanks for the Robux!</textarea>
+            </div>
+            <button type="submit" class="btn btn-robux">FAKE DONATION</button>
+            <div class="status" id="statusRobux"></div>
+          </form>
+        </div>
+
       </div><!-- /forms-grid -->
 
       <!-- FIRE ALL -->
@@ -621,6 +657,7 @@
     document.getElementById('urlSocialbuzz').textContent = base + '/webhook/socialbuzz';
     document.getElementById('urlSaweria').textContent    = base + '/webhook/saweria';
     document.getElementById('urlBagibagi').textContent   = base + '/webhook/bagibagi';
+    document.getElementById('urlRobux').textContent      = base + '/webhook/robux';
     pollPreview();
     setInterval(pollPreview, 2500);
   });
@@ -641,7 +678,7 @@
 
   function renderPreview(data, flash = false) {
     const p   = (data.platform || 'unknown').toLowerCase();
-    const lbl = { socialbuzz: 'SocialBuzz', saweria: 'Saweria', bagibagi: 'BagiBagi' }[p] || p;
+    const lbl = { socialbuzz: 'SocialBuzz', saweria: 'Saweria', bagibagi: 'BagiBagi', robux: 'Robux' }[p] || p;
 
     document.getElementById('previewWaiting').style.display = 'none';
     const result = document.getElementById('previewResult');
@@ -651,7 +688,7 @@
     tag.textContent = lbl;
     tag.className   = `preview-platform-tag ${p}`;
 
-    document.getElementById('prevAmount').textContent = 'Rp ' + fmtNum(data.amount);
+    document.getElementById('prevAmount').textContent = (data.currency || 'Rp') + ' ' + fmtNum(data.amount);
     document.getElementById('prevName').textContent   = data.username || 'Anonymous';
     document.getElementById('prevTime').textContent   = '← diterima ' + new Date().toLocaleTimeString('id-ID');
 
@@ -741,6 +778,16 @@
     }, 'statusBagibagi', f.querySelector('button'));
   }
 
+  function testRobux(e) {
+    e.preventDefault();
+    const f = e.target;
+    send('/webhook/robux', {
+      username: f.username.value,
+      amount:   parseInt(f.amount.value),
+      message:  f.message.value,
+    }, 'statusRobux', f.querySelector('button'));
+  }
+
   async function fireAll() {
     const btn    = document.getElementById('btnFireAll');
     const status = document.getElementById('fireStatus');
@@ -752,6 +799,7 @@
       { endpoint: '/webhook/socialbuzz', payload: buildPayload('formSocialbuzz','socialbuzz'), statusId: 'statusSocialbuzz' },
       { endpoint: '/webhook/saweria',    payload: buildPayload('formSaweria','saweria'),       statusId: 'statusSaweria' },
       { endpoint: '/webhook/bagibagi',   payload: buildPayload('formBagibagi','bagibagi'),     statusId: 'statusBagibagi' },
+      { endpoint: '/webhook/robux',      payload: buildPayload('formRobux','robux'),           statusId: 'statusRobux' },
     ];
 
     let success = 0;
@@ -773,7 +821,7 @@
     setTimeout(() => { lastPreviewKey = null; pollPreview(); }, 300);
     btn.disabled = false;
     btn.textContent = '▶▶ Kirim Semua Platform Sekarang';
-    status.textContent = `${success}/3 ok`;
+    status.textContent = `${success}/4 ok`;
     setTimeout(() => { status.textContent = ''; }, 4000);
   }
 
@@ -783,6 +831,7 @@
     if (platform === 'socialbuzz') return { supporter: f.querySelector('[name="supporter"]').value, amount: parseInt(f.querySelector('[name="amount"]').value), message: f.querySelector('[name="message"]').value };
     if (platform === 'saweria')    return { donator_name: f.querySelector('[name="donator_name"]').value, amount_raw: parseInt(f.querySelector('[name="amount_raw"]').value), message: f.querySelector('[name="message"]').value };
     if (platform === 'bagibagi')   return { name: f.querySelector('[name="name"]').value, amount: parseInt(f.querySelector('[name="amount"]').value), message: f.querySelector('[name="message"]').value };
+    if (platform === 'robux')      return { username: f.querySelector('[name="username"]').value, amount: parseInt(f.querySelector('[name="amount"]').value), message: f.querySelector('[name="message"]').value };
     return {};
   }
 
