@@ -10,12 +10,12 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-let lastDonation = { platform: null, username: null, amount: 0, message: "" };
+let lastDonation = { platform: null, username: null, amount: 0, message: "", currency: "Rp" };
 
 // Existing SocialBuzz webhook
 app.post("/webhook/socialbuzz", (req, res) => {
   console.log("💖 New donation from SocialBuzz:", req.body);
-  lastDonation = { platform: "socialbuzz", ...req.body };
+  lastDonation = { platform: "socialbuzz", currency: "Rp", ...req.body };
   res.json({ success: true });
 });
 
@@ -34,7 +34,7 @@ app.post("/webhook/saweria", (req, res) => {
   }
 
   const { donator_name, amount_raw, message } = req.body;
-  lastDonation = { platform: "saweria", username: donator_name, amount: amount_raw, message };
+  lastDonation = { platform: "saweria", username: donator_name, amount: amount_raw, message, currency: "Rp" };
   res.json({ success: true });
 });
 
@@ -53,7 +53,15 @@ app.post("/webhook/bagibagi", (req, res) => {
   }
 
   const { name, amount, message } = req.body;
-  lastDonation = { platform: "bagibagi", username: name, amount, message };
+  lastDonation = { platform: "bagibagi", username: name, amount, message, currency: "Rp" };
+  res.json({ success: true });
+});
+
+// Robux (Roblox) donation webhook
+app.post("/webhook/robux", (req, res) => {
+  console.log("🟦 New Robux donation:", req.body);
+  const { username, amount, message } = req.body;
+  lastDonation = { platform: "robux", username, amount, message, currency: "R$" };
   res.json({ success: true });
 });
 
