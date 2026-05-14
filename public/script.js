@@ -3,7 +3,7 @@
 // =============================================
 
 let donationHistory   = [];
-let platformCounts    = { socialbuzz: 0, saweria: 0, bagibagi: 0, robux: 0 };
+let platformCounts    = { socialbuzz: 0, saweria: 0, bagibagi: 0 };
 let lastDonationKey   = null;   // track last displayed so we don't flash duplicate
 
 // ---- bootstrap ----
@@ -52,12 +52,11 @@ function renderLatest(d) {
     socialbuzz: 'SCOIALBUZZ',
     saweria:    'SAWERIA',
     bagibagi:   'BAGI - BAGI',
-    robux:      'ROBUX',
   }[platformClass] || d.platform;
 
   document.getElementById('latestPlatform').textContent  = platformLabel;
   document.getElementById('latestPlatform').className    = `latest-platform-tag ${platformClass}`;
-  document.getElementById('latestAmount').textContent    = (d.currency || 'Rp') + ' ' + formatNum(d.amount);
+  document.getElementById('latestAmount').textContent    = 'Rp ' + formatNum(d.amount);
   document.getElementById('latestName').textContent      = d.username || 'Anonymous';
   document.getElementById('latestTime').textContent      = new Date().toLocaleTimeString('id-ID');
 
@@ -113,7 +112,7 @@ function renderHistory() {
 
   list.innerHTML = donationHistory.map(item => {
     const p   = (item.platform || 'unknown').toLowerCase();
-    const lbl = { socialbuzz: 'SocialBuzz', saweria: 'Saweria', bagibagi: 'BagiBagi', robux: 'Robux' }[p] || p;
+    const lbl = { socialbuzz: 'SocialBuzz', saweria: 'Saweria', bagibagi: 'BagiBagi' }[p] || p;
     const msg = item.message && item.message.trim()
       ? `<div class="hi-message">"${item.message}"</div>` : '';
 
@@ -128,7 +127,7 @@ function renderHistory() {
           </div>
           ${msg}
         </div>
-        <div class="hi-amount">${item.currency || 'Rp'} ${formatNum(item.amount)}</div>
+        <div class="hi-amount">Rp ${formatNum(item.amount)}</div>
       </div>
     `;
   }).join('');
@@ -155,7 +154,6 @@ function renderPlatformCounts() {
   document.getElementById('countSocialbuzz').textContent = platformCounts.socialbuzz;
   document.getElementById('countSaweria').textContent    = platformCounts.saweria;
   document.getElementById('countBagibagi').textContent   = platformCounts.bagibagi;
-  document.getElementById('countRobux').textContent      = platformCounts.robux;
 }
 
 // =============================================
@@ -197,7 +195,7 @@ function clearHistory() {
   if (!confirm('Hapus semua riwayat donasi?')) return;
 
   donationHistory  = [];
-  platformCounts   = { socialbuzz: 0, saweria: 0, bagibagi: 0, robux: 0 };
+  platformCounts   = { socialbuzz: 0, saweria: 0, bagibagi: 0 };
   lastDonationKey  = null;
 
   localStorage.removeItem('uvasa_history');
