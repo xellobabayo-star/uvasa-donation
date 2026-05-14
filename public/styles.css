@@ -20,7 +20,6 @@
   --socialbuzz:  #7c6af5;
   --saweria:     #f85149;
   --bagibagi:    #3fb950;
-  --robux:       #00a2ff;
 
   --text:        #cdd9e5;
   --text-2:      #768390;
@@ -228,7 +227,6 @@ body {
 .pill-socialbuzz::after { background: var(--socialbuzz); }
 .pill-saweria::after    { background: var(--saweria); }
 .pill-bagibagi::after   { background: var(--bagibagi); }
-.pill-robux::after      { background: var(--robux); }
 
 .pill-icon { font-size: 12px; opacity: 0.6; }
 
@@ -332,7 +330,6 @@ body {
 .latest-platform-tag.socialbuzz { background: rgba(124,106,245,0.12); color: #9d8ef5; border: 1px solid rgba(124,106,245,0.25); }
 .latest-platform-tag.saweria    { background: rgba(248,81,73,0.12);   color: #fa8680; border: 1px solid rgba(248,81,73,0.25); }
 .latest-platform-tag.bagibagi   { background: rgba(63,185,80,0.12);   color: #56d364; border: 1px solid rgba(63,185,80,0.25); }
-.latest-platform-tag.robux      { background: rgba(0,162,255,0.12);   color: #33b8ff; border: 1px solid rgba(0,162,255,0.25); }
 
 .latest-amount {
   font-size: 34px;
@@ -484,7 +481,6 @@ body {
 .hi-platform.socialbuzz { background: var(--socialbuzz); }
 .hi-platform.saweria    { background: var(--saweria); }
 .hi-platform.bagibagi   { background: var(--bagibagi); }
-.hi-platform.robux      { background: var(--robux); }
 
 /* info takes all remaining space */
 .hi-info { flex: 1; min-width: 0; }
@@ -515,7 +511,6 @@ body {
 .hi-platform-label.socialbuzz { background: rgba(124,106,245,0.12); color: #9d8ef5; }
 .hi-platform-label.saweria    { background: rgba(248,81,73,0.12);   color: #fa8680; }
 .hi-platform-label.bagibagi   { background: rgba(63,185,80,0.12);   color: #56d364; }
-.hi-platform-label.robux      { background: rgba(0,162,255,0.12);   color: #33b8ff; }
 
 .hi-donor {
   font-size: 12px;
