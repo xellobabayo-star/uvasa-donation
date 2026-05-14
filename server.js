@@ -63,8 +63,6 @@ app.post("/webhook/bagibagi", (req, res) => {
   res.json({ success: true });
 });
 
-});
-
 // Data endpoint
 app.get("/data", (_req, res) => res.json(lastDonation));
 
